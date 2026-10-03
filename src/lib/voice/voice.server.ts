@@ -96,7 +96,8 @@ export async function extract(transcript: string): Promise<Record<string, unknow
     method: "POST",
     headers: { "x-api-key": key, "anthropic-version": "2023-06-01", "content-type": "application/json" },
     body: JSON.stringify({
-      model: "claude-sonnet-5-5",
+      model: "claude-sonnet-4-6",
+      temperature: 0,
       max_tokens: 800,
       system: SYSTEM,
       tools: [TOOL],
