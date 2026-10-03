@@ -2,7 +2,7 @@ import { Building2, Clock } from "lucide-react";
 import { formatStamp } from "@/lib/followup";
 import type { ArrivalType, Referral } from "@/lib/types";
 
-export function ReferralCodeCard({ code }: { code?: string }) {
+export function ReferralCodeCard({ code }: { code?: string | undefined }) {
   if (!code) return null;
   return (
     <div className="rounded-xl border border-primary/30 bg-primary-soft p-3">
