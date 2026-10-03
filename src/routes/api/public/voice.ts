@@ -29,7 +29,7 @@ export const Route = createFileRoute("/api/public/voice")({
         } catch (e) {
           if (e instanceof VoiceError) return json(e.status, { error: e.message });
           console.error("voice demo failed");
-          return json(500, { error: "Voice processing failed." });
+          return json(424, { error: "Voice processing failed." });
         }
       },
     },
