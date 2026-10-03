@@ -98,7 +98,6 @@ export async function extract(transcript: string): Promise<Record<string, unknow
     body: JSON.stringify({
       model: "claude-sonnet-5-5",
       max_tokens: 800,
-      temperature: 0,
       system: SYSTEM,
       tools: [TOOL],
       tool_choice: { type: "tool", name: TOOL.name },
