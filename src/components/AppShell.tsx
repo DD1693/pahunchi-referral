@@ -3,31 +3,33 @@ import { BarChart3, Building2, Home, ListChecks, Plus } from "lucide-react";
 import type { ReactNode } from "react";
 import { ConnectivityBadge } from "./ConnectivityBadge";
 import { RouteMark } from "./RouteMotif";
+import { LangToggle, useT } from "@/lib/i18n";
 
 const NAV = [
-  { to: "/", label: "Home", icon: Home },
-  { to: "/referrals", label: "Referrals", icon: ListChecks },
-  { to: "/new", label: "New Referral", icon: Plus },
-  { to: "/arrival", label: "Confirm arrival", icon: Building2 },
-  { to: "/insights", label: "Insights", icon: BarChart3 },
+  { to: "/", label: "nav_home", icon: Home },
+  { to: "/referrals", label: "nav_referrals", icon: ListChecks },
+  { to: "/new", label: "nav_new", icon: Plus },
+  { to: "/arrival", label: "nav_arrival", icon: Building2 },
+  { to: "/insights", label: "nav_insights", icon: BarChart3 },
 ] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const t = useT();
   return (
-    <div className="min-h-screen pb-24">
-      <header className="sticky top-0 z-20 border-b border-border bg-background/95 backdrop-blur-sm">
+    <div className="min-h-screen pb-24 print:pb-0">
+      <header className="print:hidden sticky top-0 z-20 border-b border-border bg-background/95 backdrop-blur-sm">
         <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-3">
           <Link to="/" className="flex items-center gap-2 rounded-lg" aria-label="Pahunchi home">
             <RouteMark className="h-8 w-8" />
             <span className="text-lg font-bold tracking-tight">Pahunchi</span>
           </Link>
-          <ConnectivityBadge />
+          <div className="flex items-center gap-2"><LangToggle /><ConnectivityBadge /></div>
         </div>
       </header>
       <main className="mx-auto max-w-2xl px-4 pt-4">{children}</main>
       <nav
         aria-label="Main"
-        className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-card pb-[env(safe-area-inset-bottom)]"
+        className="print:hidden fixed inset-x-0 bottom-0 z-20 border-t border-border bg-card pb-[env(safe-area-inset-bottom)]"
       >
         <ul className="mx-auto grid max-w-2xl grid-cols-5">
           {NAV.map(({ to, label, icon: Icon }) => (
@@ -45,7 +47,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                     >
                       <Icon className="h-5 w-5" aria-hidden />
                     </span>
-                    {label}
+                    {t(label)}
                   </>
                 )}
               </Link>
