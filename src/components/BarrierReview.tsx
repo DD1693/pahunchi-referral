@@ -1,6 +1,7 @@
 import { AlertTriangle, Check, HelpCircle, Smartphone, Sparkles, UserCheck } from "lucide-react";
 import { analyseNote, modelReady, type ClassifyResult } from "@/lib/sahaay";
 import { BARRIERS, type BarrierLabel } from "@/lib/types";
+import { AudioPromptButton, OPENING_PROMPT } from "@/components/AudioPromptButton";
 
 export interface ReviewState {
   result: ClassifyResult | null;
@@ -110,6 +111,11 @@ export function BarrierReview({
           placeholder="उदाहरण: अस्पताल दूर है और आने-जाने के पैसे नहीं हैं…"
           className="field hindi min-h-36 py-3 text-lg"
         />
+        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
+          <AudioPromptButton src={OPENING_PROMPT} />
+          <span className="text-xs text-muted-foreground">Optional pre-recorded prompt. No patient audio is recorded.</span>
+        </div>
+
         <div className="mt-2">
           <p className="eyebrow mb-1.5">Example notes — tap to try</p>
           <div className="flex flex-wrap gap-2">

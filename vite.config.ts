@@ -38,6 +38,13 @@ function pahunchiServiceWorker(): Plugin {
             "/icon-192.png",
             "/icon-512.png",
             "/apple-touch-icon.png",
+            // Approved offline Hindi audio prompts
+            "/audio/pahunchi_opening_hi.mp3",
+            "/audio/pahunchi_access_cost_hi.mp3",
+            "/audio/pahunchi_household_constraint_hi.mp3",
+            "/audio/pahunchi_fear_hesitancy_hi.mp3",
+            "/audio/pahunchi_work_caregiving_hi.mp3",
+            "/audio/pahunchi_understanding_information_hi.mp3",
           ].map((url) => ({ url, revision: String(Date.now()) })),
           swDest: resolve(outDir, "sw.js"),
           maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
