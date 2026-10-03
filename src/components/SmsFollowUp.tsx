@@ -17,7 +17,7 @@ export function SmsFollowUp({ r }: { r: Referral }) {
   const patientReported = r.arrivals?.find((a) => a.type === "patient_reported_arrival");
   const facilityVerified = r.arrivals?.some((a) => a.type === "facility_verified_arrival");
   // Arrival-confirmation reminders stop once any arrival evidence exists.
-  const arrivalKnown = !!patientReported || !!facilityVerified;
+  const arrivalKnown = !!patientReported || !!facilityVerified || !!r.arrivals?.some((a) => a.type === "worker_confirmed_arrival");
 
   async function simulateSend() {
     await recordSimulatedReminder(r, body);

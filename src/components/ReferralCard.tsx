@@ -2,19 +2,33 @@ import { Link } from "@tanstack/react-router";
 import { Building2, CalendarClock, ChevronRight, CloudUpload } from "lucide-react";
 import { arrivalState, displayStatus, formatDate, timing, timingLabel } from "@/lib/followup";
 import { barrierMeta, type Referral } from "@/lib/types";
+import { useLang, useT, type TKey } from "@/lib/i18n";
+import { facilityTypeLabel } from "@/lib/facilities/data";
+
+export const STATUS_KEY: Record<ReturnType<typeof displayStatus>, TKey> = {
+  Referred: "st_referred",
+  "Follow-up due": "st_due",
+  "Not completed": "st_not_completed",
+  Completed: "st_completed",
+  "Patient reports arrival": "st_patient",
+  "Arrival verified": "st_verified",
+  "Worker-confirmed arrival": "st_worker",
+};
 
 export function StatusPill({ r }: { r: Referral }) {
   const s = displayStatus(r);
+  const t = useT();
   const cls =
-    s === "Completed" || s === "Arrival verified" || s === "Patient reports arrival"
+    s === "Completed" || s === "Arrival verified" || s === "Patient reports arrival" || s === "Worker-confirmed arrival"
       ? "bg-success-soft text-success"
       : s === "Follow-up due" || s === "Not completed"
         ? "bg-attention-soft text-attention-foreground"
         : "bg-secondary text-secondary-foreground";
-  return <span className={`chip ${cls}`}>{s}</span>;
+  return <span className={`chip ${cls}`}>{t(STATUS_KEY[s])}</span>;
 }
 
 export function ReferralCard({ r, showSync = false }: { r: Referral; showSync?: boolean }) {
+  const lang = useLang();
   // Display-only: arrival information means the date-based arrival task is no longer outstanding.
   const tm = r.outcome !== "completed" && arrivalState(r) !== "none" ? "closed" : timing(r);
   return (
@@ -35,7 +49,7 @@ export function ReferralCard({ r, showSync = false }: { r: Referral; showSync?: 
         </div>
         <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
           <span className="inline-flex items-center gap-1.5">
-            <Building2 className="h-4 w-4" aria-hidden /> {r.destination}
+            <Building2 className="h-4 w-4" aria-hidden /> {r.destination}{r.facilityType ? ` · ${facilityTypeLabel(r.facilityType, lang)}` : ""}
           </span>
           <span className="inline-flex items-center gap-1.5">
             <CalendarClock className="h-4 w-4" aria-hidden /> {formatDate(r.followUpDate)}
