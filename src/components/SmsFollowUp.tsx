@@ -15,6 +15,9 @@ export function SmsFollowUp({ r }: { r: Referral }) {
   const events = r.smsEvents ?? [];
   const sent = events.some((e) => e.direction === "outbound_reminder");
   const patientReported = r.arrivals?.find((a) => a.type === "patient_reported_arrival");
+  const facilityVerified = r.arrivals?.some((a) => a.type === "facility_verified_arrival");
+  // Arrival-confirmation reminders stop once any arrival evidence exists.
+  const arrivalKnown = !!patientReported || !!facilityVerified;
 
   async function simulateSend() {
     await recordSimulatedReminder(r, body);
@@ -48,6 +51,13 @@ export function SmsFollowUp({ r }: { r: Referral }) {
         <p className="mt-1 text-xs text-muted-foreground">Contains only the referral code — no facility, barrier or clinical details.</p>
       </div>
 
+      {arrivalKnown ? (
+        <div role="status" className="rounded-xl border border-border p-3 text-sm">
+          <p className="font-semibold">{facilityVerified ? "Arrival verified by referral facility" : "Arrival already reported by patient"}</p>
+          {patientReported && <p className="text-muted-foreground">Reported via {patientReported.source === "ivr" ? "IVR" : "SMS"}</p>}
+          <p className="mt-1 text-xs text-muted-foreground">Arrival-confirmation reminders (SMS and IVR) are no longer offered. Other care follow-up may still be needed.</p>
+        </div>
+      ) : (<>
       <button type="button" className="btn-secondary w-full text-sm" onClick={simulateSend}>
         <Send className="h-4 w-4" aria-hidden /> Simulate sending SMS
       </button>
@@ -64,6 +74,7 @@ export function SmsFollowUp({ r }: { r: Referral }) {
           {feedback && <p role="status" className={`text-sm ${feedback.ok ? "font-semibold text-success" : "text-destructive"}`}>{feedback.text}</p>}
         </form>
       )}
+      </>)}
 
       {patientReported && (
         <div className="rounded-xl bg-success-soft p-3 text-sm">
@@ -87,7 +98,7 @@ export function SmsFollowUp({ r }: { r: Referral }) {
         </div>
       )}
 
-      <IvrFollowUp r={r} />
+      <IvrFollowUp r={r} arrivalKnown={arrivalKnown} />
     </section>
   );
 }
