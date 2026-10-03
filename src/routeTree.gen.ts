@@ -11,10 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArrivalRouteImport } from './routes/arrival'
+import { Route as BasicPhoneRouteImport } from './routes/basic-phone'
 import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as NewRouteImport } from './routes/new'
+import { Route as PrintRouteImport } from './routes/print'
 import { Route as ReferralRouteImport } from './routes/referral'
 import { Route as ReferralsRouteImport } from './routes/referrals'
+import { Route as SyncRouteImport } from './routes/sync'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -24,6 +27,11 @@ const IndexRoute = IndexRouteImport.update({
 const ArrivalRoute = ArrivalRouteImport.update({
   id: '/arrival',
   path: '/arrival',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BasicPhoneRoute = BasicPhoneRouteImport.update({
+  id: '/basic-phone',
+  path: '/basic-phone',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InsightsRoute = InsightsRouteImport.update({
@@ -36,6 +44,11 @@ const NewRoute = NewRouteImport.update({
   path: '/new',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrintRoute = PrintRouteImport.update({
+  id: '/print',
+  path: '/print',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReferralRoute = ReferralRouteImport.update({
   id: '/referral',
   path: '/referral',
@@ -46,55 +59,92 @@ const ReferralsRoute = ReferralsRouteImport.update({
   path: '/referrals',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SyncRoute = SyncRouteImport.update({
+  id: '/sync',
+  path: '/sync',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/arrival': typeof ArrivalRoute
+  '/basic-phone': typeof BasicPhoneRoute
   '/insights': typeof InsightsRoute
   '/new': typeof NewRoute
+  '/print': typeof PrintRoute
   '/referral': typeof ReferralRoute
   '/referrals': typeof ReferralsRoute
+  '/sync': typeof SyncRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/arrival': typeof ArrivalRoute
+  '/basic-phone': typeof BasicPhoneRoute
   '/insights': typeof InsightsRoute
   '/new': typeof NewRoute
+  '/print': typeof PrintRoute
   '/referral': typeof ReferralRoute
   '/referrals': typeof ReferralsRoute
+  '/sync': typeof SyncRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/arrival': typeof ArrivalRoute
+  '/basic-phone': typeof BasicPhoneRoute
   '/insights': typeof InsightsRoute
   '/new': typeof NewRoute
+  '/print': typeof PrintRoute
   '/referral': typeof ReferralRoute
   '/referrals': typeof ReferralsRoute
+  '/sync': typeof SyncRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/arrival' | '/insights' | '/new' | '/referral' | '/referrals'
+    | '/'
+    | '/arrival'
+    | '/basic-phone'
+    | '/insights'
+    | '/new'
+    | '/print'
+    | '/referral'
+    | '/referrals'
+    | '/sync'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/arrival' | '/insights' | '/new' | '/referral' | '/referrals'
+  to:
+    | '/'
+    | '/arrival'
+    | '/basic-phone'
+    | '/insights'
+    | '/new'
+    | '/print'
+    | '/referral'
+    | '/referrals'
+    | '/sync'
   id:
     | '__root__'
     | '/'
     | '/arrival'
+    | '/basic-phone'
     | '/insights'
     | '/new'
+    | '/print'
     | '/referral'
     | '/referrals'
+    | '/sync'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ArrivalRoute: typeof ArrivalRoute
+  BasicPhoneRoute: typeof BasicPhoneRoute
   InsightsRoute: typeof InsightsRoute
   NewRoute: typeof NewRoute
+  PrintRoute: typeof PrintRoute
   ReferralRoute: typeof ReferralRoute
   ReferralsRoute: typeof ReferralsRoute
+  SyncRoute: typeof SyncRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -113,6 +163,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArrivalRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/basic-phone': {
+      id: '/basic-phone'
+      path: '/basic-phone'
+      fullPath: '/basic-phone'
+      preLoaderRoute: typeof BasicPhoneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/insights': {
       id: '/insights'
       path: '/insights'
@@ -125,6 +182,13 @@ declare module '@tanstack/react-router' {
       path: '/new'
       fullPath: '/new'
       preLoaderRoute: typeof NewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/print': {
+      id: '/print'
+      path: '/print'
+      fullPath: '/print'
+      preLoaderRoute: typeof PrintRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/referral': {
@@ -141,16 +205,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReferralsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sync': {
+      id: '/sync'
+      path: '/sync'
+      fullPath: '/sync'
+      preLoaderRoute: typeof SyncRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ArrivalRoute: ArrivalRoute,
+  BasicPhoneRoute: BasicPhoneRoute,
   InsightsRoute: InsightsRoute,
   NewRoute: NewRoute,
+  PrintRoute: PrintRoute,
   ReferralRoute: ReferralRoute,
   ReferralsRoute: ReferralsRoute,
+  SyncRoute: SyncRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -142,7 +142,8 @@ async function reload() {
     for (const r of missing) {
       if (!r.referralCode) r.referralCode = newReferralCode(taken);
       if (!r.journeyId) r.journeyId = newJourneyId(takenJ);
-      if (!r.facilityType && LEGACY_TYPE[r.destination]) r.facilityType = LEGACY_TYPE[r.destination];
+      const legacy = LEGACY_TYPE[r.destination];
+      if (!r.facilityType && legacy) r.facilityType = legacy;
       await tx.store.put(r);
     }
     await tx.done;
