@@ -63,7 +63,18 @@ export interface SmsEvent {
 }
 
 /** Arrival confirmations are independent and non-exclusive; both may exist for one referral. */
-export type ArrivalType = "patient_reported_arrival" | "facility_verified_arrival";
+export type ArrivalType = "patient_reported_arrival" | "facility_verified_arrival" | "worker_confirmed_arrival";
+
+/** Operational outcome of a referral leg. Never clinical. */
+export type ReferralOutcome = "service_completed" | "refer_onward" | "service_unavailable" | "other";
+
+/** Barrier the PATIENT reported through the simulated IVR menu (operational, not triage). */
+export type PatientBarrierCode = "travel_cost" | "family_accompaniment" | "work_caregiving" | "unsure_where_when" | "other";
+export interface PatientReportedBarrier {
+  code: PatientBarrierCode;
+  source: "ivr";
+  at: string;
+}
 
 export interface ArrivalEvent {
   type: ArrivalType;
