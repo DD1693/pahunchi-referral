@@ -1,7 +1,7 @@
 // Local-only referral store backed by IndexedDB. No backend, no network.
 import { useEffect, useSyncExternalStore } from "react";
 import type { IDBPDatabase } from "idb";
-import type { HistoryEvent, Referral } from "./types";
+import type { HistoryEvent, PatientBarrierCode, Referral, ReferralOutcome } from "./types";
 import { addDays, todayISO } from "./followup";
 
 interface State {
@@ -115,6 +115,16 @@ export function newReferralCode(taken: Set<string>): string {
   taken.add(c);
   return c;
 }
+/** Journey IDs: "PJ-" + 4 chars. One referral/care journey only — never a lifetime patient ID. */
+export function newJourneyId(taken: Set<string>): string {
+  let c = "PJ-" + randomCode().slice(3);
+  while (taken.has(c)) c = "PJ-" + randomCode().slice(3);
+  taken.add(c);
+  return c;
+}
+// Older records saved a destination string only; map the three legacy names to a facility type.
+const LEGACY_TYPE: Record<string, string> = { "District Hospital": "district", "Community Health Centre": "chc", "Referral Clinic": "referral_clinic" };
+
 export const normaliseCode = (s: string) => {
   const t = s.toUpperCase().replace(/[^A-Z0-9]/g, "");
   return t.startsWith("PH") ? `PH-${t.slice(2)}` : `PH-${t}`;
@@ -125,11 +135,14 @@ async function reload() {
   const all = (await d.getAll("referrals")) as Referral[];
   // Backfill codes for older/demo records, in place, without touching other fields.
   const taken = new Set(all.map((r) => r.referralCode).filter(Boolean) as string[]);
-  const missing = all.filter((r) => !r.referralCode);
+  const takenJ = new Set(all.map((r) => r.journeyId).filter(Boolean) as string[]);
+  const missing = all.filter((r) => !r.referralCode || !r.journeyId || (!r.facilityType && LEGACY_TYPE[r.destination]));
   if (missing.length) {
     const tx = d.transaction("referrals", "readwrite");
     for (const r of missing) {
-      r.referralCode = newReferralCode(taken);
+      if (!r.referralCode) r.referralCode = newReferralCode(taken);
+      if (!r.journeyId) r.journeyId = newJourneyId(takenJ);
+      if (!r.facilityType && LEGACY_TYPE[r.destination]) r.facilityType = LEGACY_TYPE[r.destination];
       await tx.store.put(r);
     }
     await tx.done;
@@ -177,9 +190,10 @@ export function useReferrals(): State {
 
 export async function saveReferral(r: Referral) {
   const d = await db();
-  if (!r.referralCode) {
+  if (!r.referralCode || !r.journeyId) {
     const all = (await d.getAll("referrals")) as Referral[];
-    r = { ...r, referralCode: newReferralCode(new Set(all.map((x) => x.referralCode).filter(Boolean) as string[])) };
+    if (!r.referralCode) r = { ...r, referralCode: newReferralCode(new Set(all.map((x) => x.referralCode).filter(Boolean) as string[])) };
+    if (!r.journeyId) r = { ...r, journeyId: newJourneyId(new Set(all.map((x) => x.journeyId).filter(Boolean) as string[])) };
   }
   await d.put("referrals", r);
   await reload();
@@ -277,4 +291,56 @@ export async function recordSimulatedIvrKeypress(
     { type: "patient_reported_arrival", at, detail: `${r.referralCode!} · via IVR` },
   );
   return result;
+}
+
+/** Worker confirmed arrival outside Pahunchi (called patient/facility). Never "facility verified"; no treatment implied. */
+export async function confirmWorkerArrival(r: Referral) {
+  if (r.arrivals?.some((a) => a.type === "worker_confirmed_arrival")) return;
+  const at = new Date().toISOString();
+  await updateReferral(
+    r,
+    { arrivals: [...(r.arrivals ?? []), { type: "worker_confirmed_arrival", referralCode: r.referralCode!, at, source: "worker" }] },
+    { type: "worker_confirmed_arrival", at, detail: `${r.referralCode!} · confirmed by worker` },
+  );
+}
+
+const OUTCOME_DETAIL: Record<ReferralOutcome, string> = {
+  service_completed: "Service completed (operational — not a clinical outcome)",
+  refer_onward: "Refer onward",
+  service_unavailable: "Service unavailable",
+  other: "Other / follow-up needed",
+};
+export async function recordReferralOutcome(r: Referral, o: ReferralOutcome) {
+  const at = new Date().toISOString();
+  await updateReferral(r, { referralOutcome: o }, { type: "referral_outcome", at, detail: OUTCOME_DETAIL[o] });
+}
+
+/** Simulated IVR "2" = not reached. Logged only; the barrier menu follows. */
+export async function recordIvrNotReached(r: Referral, callId: string) {
+  const at = new Date().toISOString();
+  await updateReferral(
+    r,
+    { ivrEvents: [...(r.ivrEvents ?? []), { callId, kind: "keypress", key: "2", parsed: "not_reached", at, simulated: true }] },
+    { type: "ivr_keypress_simulated", at, detail: "Key 2 — patient has not reached the facility" },
+  );
+}
+/** Stores a patient-reported operational barrier (simulated IVR). Does not change destination or create referrals. */
+export async function recordIvrBarrier(r: Referral, callId: string, key: string, code: PatientBarrierCode, label: string) {
+  const at = new Date().toISOString();
+  await updateReferral(
+    r,
+    {
+      ivrEvents: [...(r.ivrEvents ?? []), { callId, kind: "keypress", key, parsed: "barrier", at, simulated: true }],
+      patientReportedBarriers: [...(r.patientReportedBarriers ?? []), { code, source: "ivr", at }],
+    },
+    { type: "ivr_barrier_simulated", at, detail: `Key ${key} — ${label} (patient-reported)` },
+  );
+}
+
+/** SIMULATED reconnect: marks local changes as prepared. No network request is made. */
+export async function simulateSync(rs: Referral[]) {
+  const at = new Date().toISOString();
+  for (const r of rs.filter((x) => x.syncState === "pending")) {
+    await updateReferral(r, {}, { type: "synced", at, detail: "Simulated sync — no server contacted" });
+  }
 }

@@ -1,3 +1,4 @@
+import type { PatientBarrierCode } from "./types";
 // Voice/IVR follow-up logic. Keypad parsing is real; TELEPHONY IS SIMULATED.
 // The script avoids diagnosis, disease, results, treatment and barriers (shared-phone privacy).
 
@@ -17,7 +18,6 @@ export const IVR_SCRIPT_HI_NOT_REACHED = "अगर आप अभी तक न�
 export const IVR_BARRIER_PROMPT_HI =
   "कारण बताएँ: यात्रा या खर्च के लिए 1, परिवार या साथ जाने वाले के लिए 2, काम या देखभाल के लिए 3, कहाँ या कब जाना है पता नहीं तो 4, अन्य के लिए 5 दबाएँ।";
 
-import type { PatientBarrierCode } from "./types";
 export const IVR_BARRIER_MENU: { key: string; code: PatientBarrierCode; en: string; hi: string }[] = [
   { key: "1", code: "travel_cost", en: "Travel / cost", hi: "यात्रा / खर्च" },
   { key: "2", code: "family_accompaniment", en: "Family / accompaniment", hi: "परिवार / साथ जाने वाला" },
