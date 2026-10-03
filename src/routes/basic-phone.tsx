@@ -72,7 +72,7 @@ function BasicPhone() {
       confirmedBarriers: [],
       noBarrierConfirmed: false,
       facilityRef: { facilityId: m.facility.facilityId, healthArea: area, serviceId, constraints: [], matchedAt: now },
-      facilityType: facilityById(m.facility.facilityId)?.facilityType,
+      facilityType: facilityById(m.facility.facilityId)?.facilityType ?? m.facility.facilityType,
       outcome: "open",
       syncState: "pending",
       isDemo: false,
