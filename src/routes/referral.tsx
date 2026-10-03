@@ -6,7 +6,7 @@ import { FollowUpSupport } from "@/components/FollowUpSupport";
 import { StatusPill } from "@/components/ReferralCard";
 import { ArrivalStatus, ReferralCodeCard } from "@/components/ReferralCode";
 import { SmsFollowUp } from "@/components/SmsFollowUp";
-import { addDays, formatDate, formatStamp, timingLabel, todayISO } from "@/lib/followup";
+import { addDays, arrivalState, formatDate, formatStamp, timingLabel, todayISO } from "@/lib/followup";
 import { updateReferral, useReferrals } from "@/lib/store";
 import { barrierMeta, type HistoryType, type Referral } from "@/lib/types";
 
@@ -88,7 +88,11 @@ function DetailView({ r }: { r: Referral }) {
           <Row k="Referral date" v={formatDate(r.referralDate)} />
           <Row k="Destination" v={r.destination} />
           <Row k="Department / service" v={r.department} />
-          <Row k="Follow-up due" v={`${formatDate(r.followUpDate)} · ${timingLabel(r)}`} />
+          {arrivalState(r) === "none" ? (
+            <Row k="Follow-up due" v={`${formatDate(r.followUpDate)} · ${timingLabel(r)}`} />
+          ) : (
+            <Row k="Original follow-up date" v={formatDate(r.followUpDate)} />
+          )}
           <Row k="Current status" v={r.outcome === "completed" ? "Completed" : r.outcome === "not_completed" ? "Not completed" : "Open"} />
           {r.context && <Row k="Context" v={r.context} />}
         </dl>
