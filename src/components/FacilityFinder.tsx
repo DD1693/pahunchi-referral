@@ -106,10 +106,14 @@ export function FacilityFinder({ onChoose, chosenId }: { onChoose: (ref: Facilit
                     {why && (
                       <p className="mt-2 flex gap-1.5 text-sm"><Info className="mt-0.5 h-4 w-4 shrink-0" aria-hidden /><span><strong>Why not the closer facility?</strong> {why}</span></p>
                     )}
-                    <button type="button" className={`${chosen ? "btn-primary" : "btn-secondary"} mt-2 w-full text-sm`}
-                      onClick={() => onChoose({ facilityId: m.facility.facilityId, healthArea: area, serviceId, constraints: picked, matchedAt: new Date().toISOString() }, m.facility.name, serviceLabel(area, serviceId))}>
-                      <Building2 className="h-4 w-4" aria-hidden /> {chosen ? "Chosen — fills the form below" : "Use this facility"}
-                    </button>
+                    {m.availability === "unavailable" ? (
+                      <p className="mt-2 rounded-lg bg-secondary px-3 py-2.5 text-center text-sm font-medium text-secondary-foreground">Currently unavailable — cannot be selected</p>
+                    ) : (
+                      <button type="button" className={`${chosen ? "btn-primary" : "btn-secondary"} mt-2 w-full text-sm`}
+                        onClick={() => onChoose({ facilityId: m.facility.facilityId, healthArea: area, serviceId, constraints: picked, matchedAt: new Date().toISOString() }, m.facility.name, serviceLabel(area, serviceId))}>
+                        <Building2 className="h-4 w-4" aria-hidden /> {chosen ? "Chosen — fills the form below" : "Use this facility"}
+                      </button>
+                    )}
                   </div>
                 );
               })}
