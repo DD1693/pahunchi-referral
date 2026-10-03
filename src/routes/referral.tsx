@@ -6,6 +6,8 @@ import { FollowUpSupport } from "@/components/FollowUpSupport";
 import { StatusPill } from "@/components/ReferralCard";
 import { ArrivalStatus, ReferralCodeCard } from "@/components/ReferralCode";
 import { SmsFollowUp } from "@/components/SmsFollowUp";
+import { areaLabel, serviceLabel } from "@/lib/facilities/data";
+import { constraintLabel } from "@/lib/facilities/constraints";
 import { addDays, arrivalState, formatDate, formatStamp, timingLabel, todayISO } from "@/lib/followup";
 import { updateReferral, useReferrals } from "@/lib/store";
 import { barrierMeta, type HistoryType, type Referral } from "@/lib/types";
@@ -38,6 +40,7 @@ const EVENT_LABEL: Record<HistoryType, string> = {
   sms_reply_simulated: "Patient SMS reply (simulated)",
   ivr_call_simulated: "IVR call (simulated)",
   ivr_keypress_simulated: "IVR keypad press (simulated)",
+  facility_selected: "Facility chosen by worker",
 };
 
 function Detail() {
@@ -90,6 +93,7 @@ function DetailView({ r }: { r: Referral }) {
           <Row k="Referral date" v={formatDate(r.referralDate)} />
           <Row k="Destination" v={r.destination} />
           <Row k="Department / service" v={r.department} />
+          {r.facilityRef && <Row k="Chosen via facility finder" v={`${areaLabel(r.facilityRef.healthArea)} · ${serviceLabel(r.facilityRef.healthArea, r.facilityRef.serviceId)}${r.facilityRef.constraints.length ? ` · ${r.facilityRef.constraints.map(constraintLabel).join(", ")}` : ""} (illustrative data)`} />}
           {arrivalState(r) === "none" ? (
             <Row k="Follow-up due" v={`${formatDate(r.followUpDate)} · ${timingLabel(r)}`} />
           ) : (
