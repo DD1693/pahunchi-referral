@@ -8,6 +8,7 @@ import { ReferralCodeCard } from "@/components/ReferralCode";
 import { saveReferral, uid, updateReferral, useReferrals } from "@/lib/store";
 import type { FacilityRef, HistoryEvent, Referral } from "@/lib/types";
 import { FacilityFinder } from "@/components/FacilityFinder";
+import { TalkToPahunchi, type VoiceApply } from "@/components/TalkToPahunchi";
 import { constraintLabel } from "@/lib/facilities/constraints";
 import { FACILITY_TYPES, facilityById, facilityTypeLabel } from "@/lib/facilities/data";
 import { useLang, useT } from "@/lib/i18n";
@@ -60,6 +61,7 @@ function NewReferralForm({ parent }: { parent?: Referral | undefined }) {
   const [saved, setSaved] = useState<Referral | null>(null);
   const [facilityRef, setFacilityRef] = useState<{ ref: FacilityRef; name: string } | null>(null);
   const [manualType, setManualType] = useState("");
+  const [voice, setVoice] = useState<(VoiceApply & { n: number }) | null>(null);
   // Keep the finder link only while the destination still matches the worker's finder choice.
   const activeRef = facilityRef && facilityRef.name === f.destination.trim() ? facilityRef.ref : null;
   // Finder choice locks the facility type; a manual destination uses the manual selector.
@@ -195,8 +197,16 @@ function NewReferralForm({ parent }: { parent?: Referral | undefined }) {
               <input id="fdate" type="date" className="field" value={f.followUpDate} onChange={set("followUpDate")} />
             </div>
           </div>
+          <TalkToPahunchi
+            onApply={(v) => {
+              setVoice({ ...v, n: (voice?.n ?? 0) + 1 });
+              if (v.note) setNote(v.note);
+            }}
+          />
           <FacilityFinder
-            defaultOpen={!!parent}
+            key={voice?.n ?? 0}
+            defaultOpen={!!parent || !!voice}
+            initial={voice ?? undefined}
             chosenId={activeRef?.facilityId}
             onChoose={(ref, name, service) => {
               setFacilityRef({ ref, name });
