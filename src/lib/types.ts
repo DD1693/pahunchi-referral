@@ -26,7 +26,19 @@ export type HistoryType =
   | "completed"
   | "synced"
   | "action_planned"
+  | "sms_reminder_simulated"
+  | "sms_reply_simulated"
   | ArrivalType;
+
+/** One SMS in the follow-up thread. `simulated` is always true in this prototype (no transport). */
+export interface SmsEvent {
+  direction: "outbound_reminder" | "inbound_reply";
+  body: string;
+  at: string;
+  simulated: true;
+  /** For inbound replies: result of the deterministic parser. */
+  parsed?: "patient_reported_arrival" | "unrecognised";
+}
 
 /** Arrival confirmations are independent and non-exclusive; both may exist for one referral. */
 export type ArrivalType = "patient_reported_arrival" | "facility_verified_arrival";
@@ -61,6 +73,8 @@ export interface Referral {
   referralCode?: string;
   /** Arrival confirmations (patient-reported and/or facility-verified). Optional for older records. */
   arrivals?: ArrivalEvent[];
+  /** SMS follow-up thread (supports many reminders/replies later). Optional for older records. */
+  smsEvents?: SmsEvent[];
   referralDate: string; // YYYY-MM-DD
   destination: string;
   department: string;

@@ -207,3 +207,29 @@ export async function updateReferral(r: Referral, change: Partial<Referral>, eve
     updatedAt: event.at,
   });
 }
+
+/** Records a SIMULATED reminder SMS. Nothing is sent anywhere. */
+export async function recordSimulatedReminder(r: Referral, body: string) {
+  const at = new Date().toISOString();
+  await updateReferral(
+    r,
+    { smsEvents: [...(r.smsEvents ?? []), { direction: "outbound_reminder", body, at, simulated: true }] },
+    { type: "sms_reminder_simulated", at, detail: "Simulated — no SMS was sent" },
+  );
+}
+
+/** Records a SIMULATED patient reply after deterministic parsing; only "1" adds a patient-reported arrival. */
+export async function recordSimulatedReply(r: Referral, body: string, parsed: "patient_reported_arrival" | "unrecognised") {
+  const at = new Date().toISOString();
+  const smsEvents = [...(r.smsEvents ?? []), { direction: "inbound_reply" as const, body, at, simulated: true as const, parsed }];
+  if (parsed === "unrecognised") {
+    await updateReferral(r, { smsEvents }, { type: "sms_reply_simulated", at, detail: "Not recognised — no status change" });
+    return;
+  }
+  const withReply = { ...r, smsEvents, history: [...r.history, { type: "sms_reply_simulated" as const, at, detail: `Reply "${body.trim()}"` }] };
+  await updateReferral(
+    withReply,
+    { arrivals: [...(r.arrivals ?? []), { type: "patient_reported_arrival", referralCode: r.referralCode!, at }] },
+    { type: "patient_reported_arrival", at, detail: r.referralCode! },
+  );
+}

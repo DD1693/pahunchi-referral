@@ -5,6 +5,7 @@ import { BarrierReview, emptyReview, reviewComplete, type ReviewState } from "@/
 import { FollowUpSupport } from "@/components/FollowUpSupport";
 import { StatusPill } from "@/components/ReferralCard";
 import { ArrivalStatus, ReferralCodeCard } from "@/components/ReferralCode";
+import { SmsFollowUp } from "@/components/SmsFollowUp";
 import { addDays, formatDate, formatStamp, timingLabel, todayISO } from "@/lib/followup";
 import { updateReferral, useReferrals } from "@/lib/store";
 import { barrierMeta, type HistoryType, type Referral } from "@/lib/types";
@@ -33,6 +34,8 @@ const EVENT_LABEL: Record<HistoryType, string> = {
   action_planned: "Follow-up action planned",
   facility_verified_arrival: "Facility-verified arrival",
   patient_reported_arrival: "Patient-reported arrival",
+  sms_reminder_simulated: "SMS reminder (simulated)",
+  sms_reply_simulated: "Patient SMS reply (simulated)",
 };
 
 function Detail() {
@@ -213,6 +216,8 @@ function DetailView({ r }: { r: Referral }) {
           )}
         </section>
       )}
+
+      <SmsFollowUp r={r} />
 
       {r.outcome === "completed" && (
         <button type="button" className="btn-secondary w-full" onClick={() => updateReferral(r, { outcome: "open" }, { type: "rescheduled", at: now(), detail: "Reopened" })}>
