@@ -16,3 +16,4 @@
 - Shared component styles are Tailwind `@utility` classes in `src/styles.css` (Tailwind v4 cannot @apply plain classes).
 - Referral detail uses `/referral?id=` (search param) so one cached page shell serves every record offline.
 - Referral codes (`PH-XXXX`) are generated/backfilled in `src/lib/store.ts`; arrivals are a non-exclusive `arrivals[]` list; SMS follow-up is a `smsEvents[]` thread (transport simulated, parsing deterministic in `src/lib/sms.ts`); (patient-reported and facility-verified) also mirrored in history, so new arrival sources plug in without schema changes.
+- Voice/IVR follow-up is simulated (`src/lib/ivr.ts`, `ivrEvents[]`); keypad 1 adds the shared patient_reported_arrival with `source: "ivr"`, deduped per call — channels share one arrival type.

@@ -36,6 +36,8 @@ const EVENT_LABEL: Record<HistoryType, string> = {
   patient_reported_arrival: "Patient-reported arrival",
   sms_reminder_simulated: "SMS reminder (simulated)",
   sms_reply_simulated: "Patient SMS reply (simulated)",
+  ivr_call_simulated: "IVR call (simulated)",
+  ivr_keypress_simulated: "IVR keypad press (simulated)",
 };
 
 function Detail() {
