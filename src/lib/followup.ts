@@ -33,13 +33,15 @@ export type DisplayStatus =
   | "Not completed"
   | "Completed"
   | "Patient reports arrival"
-  | "Arrival verified";
+  | "Arrival verified"
+  | "Worker-confirmed arrival";
 
 /** Arrival loop state from arrival events. Facility verification takes precedence; events are never removed. */
-export type ArrivalState = "none" | "patient_reported" | "verified";
+export type ArrivalState = "none" | "patient_reported" | "worker_confirmed" | "verified";
 export function arrivalState(r: Referral): ArrivalState {
   const a = r.arrivals ?? [];
   if (a.some((x) => x.type === "facility_verified_arrival")) return "verified";
+  if (a.some((x) => x.type === "worker_confirmed_arrival")) return "worker_confirmed";
   if (a.some((x) => x.type === "patient_reported_arrival")) return "patient_reported";
   return "none";
 }
@@ -48,6 +50,7 @@ export function displayStatus(r: Referral, today = todayISO()): DisplayStatus {
   if (r.outcome === "completed") return "Completed";
   const as = arrivalState(r);
   if (as === "verified") return "Arrival verified";
+  if (as === "worker_confirmed") return "Worker-confirmed arrival";
   if (as === "patient_reported") return "Patient reports arrival";
   if (r.outcome === "not_completed") return "Not completed";
   return r.followUpDate <= today ? "Follow-up due" : "Referred";
@@ -66,7 +69,7 @@ const RANK: Record<Timing, number> = { overdue: 0, due_today: 1, upcoming: 2, cl
 export function followUpQueue(rs: Referral[]): Referral[] {
   const t = todayISO();
   return rs
-    .filter((r) => r.outcome !== "completed" && arrivalState(r) !== "verified")
+    .filter((r) => r.outcome !== "completed" && arrivalState(r) !== "verified" && arrivalState(r) !== "worker_confirmed")
     .sort(
       (a, b) =>
         RANK[timing(a, t)] - RANK[timing(b, t)] ||
@@ -89,6 +92,7 @@ export function formatStamp(iso: string): string {
 export function timingLabel(r: Referral): string {
   const as = arrivalState(r);
   if (r.outcome !== "completed" && as === "verified") return "Arrival verified";
+  if (r.outcome !== "completed" && as === "worker_confirmed") return "Worker-confirmed arrival";
   if (r.outcome !== "completed" && as === "patient_reported") return "Patient reports arrival";
   const t = todayISO();
   const tm = timing(r, t);
@@ -96,4 +100,20 @@ export function timingLabel(r: Referral): string {
   if (tm === "due_today") return "Due today";
   const diff = Math.round((parse(r.followUpDate).getTime() - parse(t).getTime()) / 86400000);
   return tm === "overdue" ? `Overdue ${-diff}d` : `In ${diff}d`;
+}
+
+export type AttentionReason = "barrier" | "missed" | "unconfirmed";
+/** Operational follow-up groups (never medical risk). Barrier → missed/no response → unconfirmed, then date. */
+export function needsAttention(rs: Referral[], t = todayISO()): { r: Referral; reason: AttentionReason }[] {
+  const out: { r: Referral; reason: AttentionReason }[] = [];
+  for (const r of rs) {
+    if (r.outcome === "completed") continue;
+    const as = arrivalState(r);
+    if (as === "verified" || as === "worker_confirmed") continue;
+    if (as === "none" && (r.patientReportedBarriers?.length ?? 0) > 0) out.push({ r, reason: "barrier" });
+    else if (as === "none" && r.followUpDate <= t) out.push({ r, reason: "missed" });
+    else if (as === "patient_reported") out.push({ r, reason: "unconfirmed" });
+  }
+  const O: Record<AttentionReason, number> = { barrier: 0, missed: 1, unconfirmed: 2 };
+  return out.sort((a, b) => O[a.reason] - O[b.reason] || a.r.followUpDate.localeCompare(b.r.followUpDate));
 }

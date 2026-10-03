@@ -45,6 +45,23 @@ export const SERVICE_CATALOGUE: Record<HealthArea, { id: string; label: string }
   ],
 };
 
+export type FacilityTypeId = "sub_centre" | "phc" | "chc" | "district" | "tertiary" | "specialist" | "referral_clinic" | "other";
+/** Illustrative facility categories. Context only — never a substitute for service availability. */
+export const FACILITY_TYPES: { id: FacilityTypeId; en: string; hi: string }[] = [
+  { id: "sub_centre", en: "Sub-centre / Health & Wellness Centre", hi: "उप-केंद्र / स्वास्थ्य एवं आरोग्य केंद्र" },
+  { id: "phc", en: "PHC / Primary Health Centre", hi: "प्राथमिक स्वास्थ्य केंद्र (PHC)" },
+  { id: "chc", en: "CHC / Community Health Centre", hi: "सामुदायिक स्वास्थ्य केंद्र (CHC)" },
+  { id: "district", en: "District Hospital", hi: "ज़िला अस्पताल" },
+  { id: "tertiary", en: "Medical College / Tertiary Hospital", hi: "मेडिकल कॉलेज / तृतीयक अस्पताल" },
+  { id: "specialist", en: "Specialist Centre", hi: "विशेषज्ञ केंद्र" },
+  { id: "referral_clinic", en: "Referral Clinic", hi: "रेफरल क्लिनिक" },
+  { id: "other", en: "Other", hi: "अन्य" },
+];
+export const facilityTypeLabel = (id: string | undefined, lang: "en" | "hi" = "en") => {
+  const t = FACILITY_TYPES.find((x) => x.id === id);
+  return t ? t[lang] : "";
+};
+
 export interface Facility {
   facilityId: string;
   name: string;
@@ -53,6 +70,11 @@ export interface Facility {
   travelTimeMin: number;
   transportNote: string;
   dataSource: string;
+  /** Facility category id (contextual only — never used for ranking). */
+  facilityType: FacilityTypeId;
+  address: string;
+  /** Placeholder contact in synthetic data. */
+  contact: string;
 }
 
 export interface FacilityService {
@@ -75,11 +97,11 @@ export interface FacilityService {
 }
 
 export const FACILITIES: Facility[] = [
-  { facilityId: "A", name: "Illustrative CHC A", level: "Community Health Centre", distanceKm: 4, travelTimeMin: 20, transportNote: "Shared auto from the block market", dataSource: DATA_LABEL },
-  { facilityId: "B", name: "Illustrative District Hospital B", level: "District Hospital", distanceKm: 14, travelTimeMin: 45, transportNote: "Direct bus, morning and evening", dataSource: DATA_LABEL },
-  { facilityId: "C", name: "Illustrative Women's Centre C", level: "Women's / specialist centre", distanceKm: 22, travelTimeMin: 70, transportNote: "Bus with one change", dataSource: DATA_LABEL },
-  { facilityId: "D", name: "Illustrative Medical College Hospital D", level: "Medical College Hospital", distanceKm: 45, travelTimeMin: 110, transportNote: "Bus to city, then auto", dataSource: DATA_LABEL },
-  { facilityId: "E", name: "Illustrative Regional Specialist Centre E", level: "Regional specialist centre", distanceKm: 80, travelTimeMin: 180, transportNote: "Long-distance bus", dataSource: DATA_LABEL },
+  { facilityId: "A", name: "Illustrative Community Health Centre A", level: "Community Health Centre", facilityType: "chc", address: "Block market road, Illustrative Block A", contact: "XXXXXXXXXX", distanceKm: 4, travelTimeMin: 20, transportNote: "Shared auto from the block market", dataSource: DATA_LABEL },
+  { facilityId: "B", name: "Illustrative District Hospital B", level: "District Hospital", facilityType: "district", address: "Station road, Illustrative District B", contact: "XXXXXXXXXX", distanceKm: 14, travelTimeMin: 45, transportNote: "Direct bus, morning and evening", dataSource: DATA_LABEL },
+  { facilityId: "C", name: "Illustrative Specialist Centre C", level: "Women's / specialist centre", facilityType: "specialist", address: "Civil lines, Illustrative Town C", contact: "XXXXXXXXXX", distanceKm: 22, travelTimeMin: 70, transportNote: "Bus with one change", dataSource: DATA_LABEL },
+  { facilityId: "D", name: "Illustrative Medical College Hospital D", level: "Medical College Hospital", facilityType: "tertiary", address: "College campus, Illustrative City D", contact: "XXXXXXXXXX", distanceKm: 45, travelTimeMin: 110, transportNote: "Bus to city, then auto", dataSource: DATA_LABEL },
+  { facilityId: "E", name: "Illustrative Tertiary Specialist Centre E", level: "Regional specialist centre", facilityType: "specialist", address: "Ring road, Illustrative Region E", contact: "XXXXXXXXXX", distanceKm: 80, travelTimeMin: 180, transportNote: "Long-distance bus", dataSource: DATA_LABEL },
 ];
 
 const daysAgo = (n: number) => {
@@ -127,3 +149,32 @@ export const FACILITY_SERVICES: FacilityService[] = FACILITIES.flatMap((f) =>
 
 export const serviceLabel = (area: HealthArea, id: string) => SERVICE_CATALOGUE[area].find((s) => s.id === id)?.label ?? id;
 export const areaLabel = (area: HealthArea) => HEALTH_AREAS.find((a) => a.id === area)?.label ?? area;
+
+export const SERVICE_HI: Record<string, string> = {
+  hpv_via: "HPV / VIA जाँच", colposcopy: "कॉल्पोस्कोपी", thermal_ablation: "थर्मल एब्लेशन", cervical_biopsy: "सर्वाइकल बायोप्सी",
+  pathology: "पैथोलॉजी", cervical_specialist: "विशेषज्ञ परामर्श", cbe: "क्लिनिकल स्तन जाँच", breast_us: "स्तन अल्ट्रासाउंड",
+  mammography: "मैमोग्राफ़ी", breast_biopsy: "स्तन बायोप्सी", breast_specialist: "विशेषज्ञ परामर्श", hr_anc: "उच्च-जोखिम प्रसवपूर्व जाँच",
+  emoc: "आपातकालीन प्रसूति सेवा", obs_us: "प्रसूति अल्ट्रासाउंड", maternal_specialist: "विशेषज्ञ परामर्श",
+  family_planning: "परिवार नियोजन सेवाएँ", gynae: "स्त्री रोग परामर्श", repro_specialist: "विशेषज्ञ परामर्श",
+};
+/** "Thermal ablation / थर्मल एब्लेशन" */
+export const serviceBilingual = (area: HealthArea, id: string) => {
+  const hi = SERVICE_HI[id];
+  return hi ? `${serviceLabel(area, id)} / ${hi}` : serviceLabel(area, id);
+};
+export const facilityById = (id: string) => FACILITIES.find((f) => f.facilityId === id);
+export const facilityService = (facilityId: string, area: HealthArea, serviceId: string) =>
+  FACILITY_SERVICES.find((s) => s.facilityId === facilityId && s.healthArea === area && s.serviceId === serviceId);
+
+const DAY = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+/** Human-readable schedule, e.g. "Daily, morning (9am–1pm)". */
+export function scheduleSummary(svc: FacilityService | undefined): string {
+  if (!svc?.schedule?.length) return "Contact facility for days/times";
+  const sess = (ss: Session[]) => ss.map((x) => (x === "morning" ? "morning (9am–1pm)" : "afternoon (2pm–5pm)")).join(" & ");
+  const first = svc.schedule[0]!;
+  const same = svc.schedule.every((d) => d.sessions.join() === first.sessions.join());
+  if (same && svc.schedule.length === 7) return `Daily, ${sess(first.sessions)}`;
+  return svc.schedule.map((d) => `${DAY[d.day]} ${sess(d.sessions)}`).join("; ");
+}
+export const appointmentText = (svc: FacilityService | undefined) =>
+  svc?.appointmentRequired === true ? "Required" : svc?.appointmentRequired === false ? "Not required" : "Contact facility";

@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, CalendarClock, ClipboardList, CheckCircle2, CloudUpload, History, PhoneOutgoing, RotateCcw, Smartphone, UserCheck, XCircle } from "lucide-react";
 import { useState } from "react";
 import { BarrierReview, emptyReview, reviewComplete, type ReviewState } from "@/components/BarrierReview";
@@ -6,11 +6,15 @@ import { FollowUpSupport } from "@/components/FollowUpSupport";
 import { StatusPill } from "@/components/ReferralCard";
 import { ArrivalStatus, ReferralCodeCard } from "@/components/ReferralCode";
 import { SmsFollowUp } from "@/components/SmsFollowUp";
-import { areaLabel, serviceLabel } from "@/lib/facilities/data";
+import { areaLabel, facilityTypeLabel, serviceLabel } from "@/lib/facilities/data";
+import { useLang, useT } from "@/lib/i18n";
+import { patientBarrierLabel } from "@/lib/ivr";
+import { JourneyView } from "@/components/JourneyView";
+import { Printer, Route as RouteIcon } from "lucide-react";
 import { constraintLabel } from "@/lib/facilities/constraints";
 import { addDays, arrivalState, formatDate, formatStamp, timingLabel, todayISO } from "@/lib/followup";
-import { updateReferral, useReferrals } from "@/lib/store";
-import { barrierMeta, type HistoryType, type Referral } from "@/lib/types";
+import { confirmWorkerArrival, recordReferralOutcome, updateReferral, useReferrals } from "@/lib/store";
+import { barrierMeta, type HistoryType, type Referral, type ReferralOutcome } from "@/lib/types";
 
 export const Route = createFileRoute("/referral")({
   validateSearch: (s: Record<string, unknown>) => ({ id: typeof s["id"] === "string" ? s["id"] : "" }),
@@ -20,6 +24,8 @@ export const Route = createFileRoute("/referral")({
       { name: "description", content: "Referral follow-up detail, confirmed barriers and activity history." },
       { property: "og:title", content: "Referral detail — Pahunchi" },
       { property: "og:description", content: "Update follow-up and review human-confirmed barriers for a referral." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Detail,
@@ -41,7 +47,18 @@ const EVENT_LABEL: Record<HistoryType, string> = {
   ivr_call_simulated: "IVR call (simulated)",
   ivr_keypress_simulated: "IVR keypad press (simulated)",
   facility_selected: "Facility chosen by worker",
+  worker_confirmed_arrival: "Worker-confirmed arrival",
+  ivr_barrier_simulated: "Patient-reported barrier via IVR (simulated)",
+  referral_outcome: "Referral outcome recorded",
+  onward_referral_created: "Onward referral",
 };
+
+const OUTCOMES: { id: ReferralOutcome; key: "oc_service_completed" | "oc_refer_onward" | "oc_service_unavailable" | "oc_other" }[] = [
+  { id: "service_completed", key: "oc_service_completed" },
+  { id: "refer_onward", key: "oc_refer_onward" },
+  { id: "service_unavailable", key: "oc_service_unavailable" },
+  { id: "other", key: "oc_other" },
+];
 
 function Detail() {
   const { id } = Route.useSearch();
@@ -74,11 +91,22 @@ function DetailView({ r }: { r: Referral }) {
   const [note, setNote] = useState("");
   const [review, setReview] = useState<ReviewState>(emptyReview(r.confirmedBarriers));
   const now = () => new Date().toISOString();
+  const t = useT();
+  const lang = useLang();
+  const navigate = useNavigate();
+  const { referrals } = useReferrals();
+  const as = arrivalState(r);
+  const hasOnward = referrals.some((x) => x.parentReferralId === r.id);
+
+  async function chooseOutcome(o: ReferralOutcome) {
+    await recordReferralOutcome(r, o);
+    if (o === "refer_onward") navigate({ to: "/new", search: { onward: r.id } });
+  }
 
   return (
     <div className="space-y-5">
       <Link to="/referrals" className="btn-ghost -ml-3 min-h-10 px-3 text-sm">
-        <ArrowLeft className="h-4 w-4" aria-hidden /> Referrals
+        <ArrowLeft className="h-4 w-4" aria-hidden /> {t("back_referrals")}
       </Link>
 
       <section className="surface p-4">
@@ -89,10 +117,22 @@ function DetailView({ r }: { r: Referral }) {
         </div>
         <div className="mt-3"><ReferralCodeCard code={r.referralCode} /></div>
         <div className="mt-3"><ArrivalStatus r={r} /></div>
+        {as !== "verified" && as !== "worker_confirmed" && r.outcome !== "completed" && (
+          <div className="mt-3 rounded-xl border border-border p-3">
+            <button type="button" className="btn-secondary w-full text-sm" onClick={() => confirmWorkerArrival(r)}>
+              <UserCheck className="h-4 w-4" aria-hidden /> {t("confirm_manual")}
+            </button>
+            <p className="mt-1 text-xs text-muted-foreground">{t("manual_note")}</p>
+          </div>
+        )}
+        <Link to="/print" search={{ id: r.id }} className="btn-secondary mt-3 w-full text-sm"><Printer className="h-4 w-4" aria-hidden /> {t("print_referral")}</Link>
         <dl className="mt-3 divide-y divide-border text-sm">
-          <Row k="Referral date" v={formatDate(r.referralDate)} />
-          <Row k="Destination" v={r.destination} />
-          <Row k="Department / service" v={r.department} />
+          <Row k={t("referral_date")} v={formatDate(r.referralDate)} />
+          {r.origin && <Row k={t("origin")} v={`${r.origin}${r.originType ? ` · ${facilityTypeLabel(r.originType, lang)}` : ""}`} />}
+          <Row k={t("destination")} v={r.destination} />
+          <Row k={t("facility_type")} v={facilityTypeLabel(r.facilityType, lang)} />
+          <Row k={t("department")} v={r.department} />
+          {r.journeyId && <Row k={t("journey_id")} v={r.journeyId} />}
           {r.facilityRef && <Row k="Chosen via facility finder" v={`${areaLabel(r.facilityRef.healthArea)} · ${serviceLabel(r.facilityRef.healthArea, r.facilityRef.serviceId)}${r.facilityRef.constraints.length ? ` · ${r.facilityRef.constraints.map(constraintLabel).join(", ")}` : ""} (illustrative data)`} />}
           {arrivalState(r) === "none" ? (
             <Row k="Follow-up due" v={`${formatDate(r.followUpDate)} · ${timingLabel(r)}`} />
@@ -107,6 +147,39 @@ function DetailView({ r }: { r: Referral }) {
           <span className="text-sm text-muted-foreground">Stored locally on this device.</span>
         </div>
       </section>
+
+      {(as === "verified" || as === "worker_confirmed") && (
+        <section className="surface space-y-3 p-4">
+          <h2 className="text-lg font-bold">{t("what_happened")}</h2>
+          <p className="text-xs text-muted-foreground">{t("outcome_note")}</p>
+          <div className="grid grid-cols-2 gap-2">
+            {OUTCOMES.map((o) => (
+              <button key={o.id} type="button" aria-pressed={r.referralOutcome === o.id}
+                className={`${r.referralOutcome === o.id ? "btn-primary" : "btn-secondary"} h-auto py-3 text-sm`}
+                onClick={() => chooseOutcome(o.id)}>
+                {o.id === "refer_onward" && <RouteIcon className="h-4 w-4" aria-hidden />} {t(o.key)}
+              </button>
+            ))}
+          </div>
+          {r.referralOutcome === "refer_onward" && !hasOnward && (
+            <Link to="/new" search={{ onward: r.id }} className="btn-ghost w-full text-sm">{t("oc_refer_onward")} →</Link>
+          )}
+        </section>
+      )}
+
+      {r.journeyId && <JourneyView r={r} all={referrals} />}
+
+      {(r.patientReportedBarriers?.length ?? 0) > 0 && (
+        <section className="surface p-4">
+          <h2 className="text-lg font-bold">{t("patient_barriers")}</h2>
+          <p className="text-xs text-muted-foreground">Reported by the patient through the simulated IVR menu. Operational only — not clinical triage. Destination is not changed automatically.</p>
+          <ul className="mt-2 space-y-1.5">
+            {r.patientReportedBarriers!.map((b, i) => (
+              <li key={i} className="rounded-lg bg-attention-soft p-2 text-sm"><span className="font-semibold">{patientBarrierLabel(b.code, lang)}</span> <span className="text-xs text-muted-foreground">· IVR · {formatStamp(b.at)}</span></li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="surface p-4">
         <h2 className="text-lg font-bold">Confirmed barriers</h2>

@@ -31,6 +31,9 @@ export type HistoryType =
   | "ivr_call_simulated"
   | "ivr_keypress_simulated"
   | "facility_selected"
+  | "ivr_barrier_simulated"
+  | "referral_outcome"
+  | "onward_referral_created"
   | ArrivalType;
 
 /** Worker's choice from the facility finder (illustrative synthetic data). Optional; destination stays a string. */
@@ -47,7 +50,7 @@ export interface IvrEvent {
   callId: string;
   kind: "call_started" | "keypress";
   key?: string;
-  parsed?: "patient_reported_arrival" | "unrecognised" | "duplicate";
+  parsed?: "patient_reported_arrival" | "unrecognised" | "duplicate" | "not_reached" | "barrier";
   at: string;
   simulated: true;
 }
@@ -63,14 +66,25 @@ export interface SmsEvent {
 }
 
 /** Arrival confirmations are independent and non-exclusive; both may exist for one referral. */
-export type ArrivalType = "patient_reported_arrival" | "facility_verified_arrival";
+export type ArrivalType = "patient_reported_arrival" | "facility_verified_arrival" | "worker_confirmed_arrival";
+
+/** Operational outcome of a referral leg. Never clinical. */
+export type ReferralOutcome = "service_completed" | "refer_onward" | "service_unavailable" | "other";
+
+/** Barrier the PATIENT reported through the simulated IVR menu (operational, not triage). */
+export type PatientBarrierCode = "travel_cost" | "family_accompaniment" | "work_caregiving" | "unsure_where_when" | "other";
+export interface PatientReportedBarrier {
+  code: PatientBarrierCode;
+  source: "ivr";
+  at: string;
+}
 
 export interface ArrivalEvent {
   type: ArrivalType;
   referralCode: string;
   at: string; // ISO timestamp
   /** Channel for patient-reported arrivals (older records: SMS). */
-  source?: "sms" | "ivr";
+  source?: "sms" | "ivr" | "worker";
 }
 
 export interface HistoryEvent {
@@ -103,6 +117,19 @@ export interface Referral {
   ivrEvents?: IvrEvent[];
   /** Set only when the worker chose a destination via the facility finder. */
   facilityRef?: FacilityRef;
+  /** Facility category id (see FACILITY_TYPES). From the finder (locked) or chosen manually. */
+  facilityType?: string;
+  /** One referral/care journey (PJ-XXXX). Not a lifetime patient identifier. */
+  journeyId?: string;
+  /** Previous leg in the same journey, for onward referrals. */
+  parentReferralId?: string;
+  /** Origin facility for onward referrals (the previous destination). */
+  origin?: string;
+  originType?: string;
+  /** Operational outcome after arrival. Separate from follow-up `outcome`. */
+  referralOutcome?: ReferralOutcome;
+  /** Patient-reported operational barriers (simulated IVR menu). */
+  patientReportedBarriers?: PatientReportedBarrier[];
   referralDate: string; // YYYY-MM-DD
   destination: string;
   department: string;

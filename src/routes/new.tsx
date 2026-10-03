@@ -1,38 +1,51 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Lock, Save } from "lucide-react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { ArrowLeft, ArrowRight, Lock, Printer, Save } from "lucide-react";
 import { useState } from "react";
 import { BarrierReview, emptyReview, reviewComplete, type ReviewState } from "@/components/BarrierReview";
 import { addDays, todayISO } from "@/lib/followup";
 import { FollowUpSupport } from "@/components/FollowUpSupport";
 import { ReferralCodeCard } from "@/components/ReferralCode";
-import { saveReferral, uid } from "@/lib/store";
+import { saveReferral, uid, updateReferral, useReferrals } from "@/lib/store";
 import type { FacilityRef, HistoryEvent, Referral } from "@/lib/types";
 import { FacilityFinder } from "@/components/FacilityFinder";
 import { constraintLabel } from "@/lib/facilities/constraints";
+import { FACILITY_TYPES, facilityById, facilityTypeLabel } from "@/lib/facilities/data";
+import { useLang, useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/new")({
+  validateSearch: (s: Record<string, unknown>): { onward?: string } => (typeof s["onward"] === "string" ? { onward: s["onward"] } : {}),
   head: () => ({
     meta: [
       { title: "New referral — Pahunchi" },
       { name: "description", content: "Record a referral and analyse a Hindi barrier note on this device." },
       { property: "og:title", content: "New referral — Pahunchi" },
       { property: "og:description", content: "Record a referral, analyse the note on-device, confirm barriers, save locally." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: NewReferral,
 });
 
-const FACILITIES = ["District Hospital", "Community Health Centre", "Referral Clinic"];
-
 export const PRIVACY_NOTE =
   "Prototype records are stored on this device. Do not enter names, phone numbers, clinical results or other identifying information.";
 
 function NewReferral() {
+  const { onward } = Route.useSearch();
+  const { loaded, referrals } = useReferrals();
+  if (onward && !loaded) return <p className="text-muted-foreground">Loading…</p>;
+  const parent = onward ? referrals.find((x) => x.id === onward) : undefined;
+  return <NewReferralForm key={parent?.id ?? "new"} parent={parent} />;
+}
+
+function NewReferralForm({ parent }: { parent?: Referral | undefined }) {
   const navigate = useNavigate();
+  const tr = useT();
+  const lang = useLang();
   const [step, setStep] = useState<1 | 2>(1);
   const t = todayISO();
   const [f, setF] = useState({
-    patientId: "",
+    patientId: parent?.patientId ?? "",
     referralDate: t,
     destination: "",
     department: "",
@@ -46,8 +59,11 @@ function NewReferral() {
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saved, setSaved] = useState<Referral | null>(null);
   const [facilityRef, setFacilityRef] = useState<{ ref: FacilityRef; name: string } | null>(null);
+  const [manualType, setManualType] = useState("");
   // Keep the finder link only while the destination still matches the worker's finder choice.
   const activeRef = facilityRef && facilityRef.name === f.destination.trim() ? facilityRef.ref : null;
+  // Finder choice locks the facility type; a manual destination uses the manual selector.
+  const facilityType = activeRef ? facilityById(activeRef.facilityId)?.facilityType ?? "" : manualType;
 
   const missing = {
     patientId: !f.patientId.trim(),
@@ -71,8 +87,18 @@ function NewReferral() {
       },
     ];
     if (activeRef) history.splice(1, 0, { type: "facility_selected", at: now, detail: f.destination.trim() });
+    if (parent) history.splice(1, 0, { type: "onward_referral_created", at: now, detail: `From ${parent.referralCode ?? ""} · ${parent.destination}` });
     const r: Referral = {
       ...(activeRef ? { facilityRef: activeRef } : {}),
+      ...(facilityType ? { facilityType } : {}),
+      ...(parent
+        ? {
+            ...(parent.journeyId ? { journeyId: parent.journeyId } : {}),
+            parentReferralId: parent.id,
+            origin: parent.destination,
+            ...(parent.facilityType ? { originType: parent.facilityType } : {}),
+          }
+        : {}),
       id: uid(),
       patientId: f.patientId.trim().toUpperCase(),
       referralDate: f.referralDate,
@@ -92,11 +118,10 @@ function NewReferral() {
     };
     try {
       const stored = await saveReferral(r);
-      if (stored.confirmedBarriers.length > 0) {
-        setSaved(stored);
-        return;
+      if (parent) {
+        await updateReferral(parent, {}, { type: "onward_referral_created", at: now, detail: `${stored.referralCode} → ${stored.destination}` });
       }
-      navigate({ to: "/referral", search: { id: stored.id } });
+      setSaved(stored);
     } catch (e) {
       console.error(e);
       setSaveError("Could not save on this device. Please try again.");
@@ -112,7 +137,14 @@ function NewReferral() {
           Referral {saved.patientId} saved on this device.
         </p>
         <ReferralCodeCard code={saved.referralCode} />
-        <FollowUpSupport r={saved} onDone={done} doneLabel="Continue without actions" />
+        <Link to="/print" search={{ id: saved.id }} className="btn-secondary w-full">
+          <Printer className="h-5 w-5" aria-hidden /> {tr("print_referral")}
+        </Link>
+        {saved.confirmedBarriers.length > 0 ? (
+          <FollowUpSupport r={saved} onDone={done} doneLabel="Continue without actions" />
+        ) : (
+          <button type="button" className="btn-primary w-full" onClick={done}>{tr("continue")}</button>
+        )}
       </div>
     );
   }
@@ -120,8 +152,15 @@ function NewReferral() {
   return (
     <div className="space-y-5">
       <div>
-        <p className="eyebrow">Step {step} of 2</p>
-        <h1 className="text-2xl font-bold">{step === 1 ? "Referral details" : "Barrier note"}</h1>
+        <p className="eyebrow">{tr("step_of", { n: step })}</p>
+        <h1 className="text-2xl font-bold">{step === 1 ? tr("referral_details") : tr("barrier_note")}</h1>
+        {parent && (
+          <div className="mt-3 rounded-xl border border-primary/30 bg-primary-soft p-3 text-sm">
+            <p className="font-semibold">{tr("onward_from", { code: parent.referralCode ?? "" })} · {tr("journey_id")} <span className="font-mono">{parent.journeyId}</span></p>
+            <p>{tr("origin")}: {parent.destination}{parent.facilityType ? ` (${facilityTypeLabel(parent.facilityType, lang)})` : ""}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{tr("onward_note")}</p>
+          </div>
+        )}
         <div className="mt-3 grid grid-cols-2 gap-2" aria-hidden>
           <span className="h-1.5 rounded-full bg-primary" />
           <span className={`h-1.5 rounded-full ${step === 2 ? "bg-primary" : "bg-border"}`} />
@@ -139,7 +178,7 @@ function NewReferral() {
           }}
         >
           <div>
-            <label htmlFor="pid" className="field-label">Patient ID *</label>
+            <label htmlFor="pid" className="field-label">{tr("patient_id")} *</label>
             <input id="pid" className="field font-mono uppercase" autoComplete="off" placeholder="e.g. CG-0142" value={f.patientId} onChange={set("patientId")} aria-invalid={tried && missing.patientId} aria-describedby="pid-note" />
             <p id="pid-note" className="mt-2 flex items-start gap-2 rounded-lg bg-secondary p-3 text-sm text-secondary-foreground">
               <Lock className="mt-0.5 h-4 w-4 shrink-0" aria-hidden /> {PRIVACY_NOTE}
@@ -148,15 +187,16 @@ function NewReferral() {
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label htmlFor="rdate" className="field-label">Referral date *</label>
+              <label htmlFor="rdate" className="field-label">{tr("referral_date")} *</label>
               <input id="rdate" type="date" className="field" value={f.referralDate} onChange={set("referralDate")} />
             </div>
             <div>
-              <label htmlFor="fdate" className="field-label">Follow-up due *</label>
+              <label htmlFor="fdate" className="field-label">{tr("followup_due")} *</label>
               <input id="fdate" type="date" className="field" value={f.followUpDate} onChange={set("followUpDate")} />
             </div>
           </div>
           <FacilityFinder
+            defaultOpen={!!parent}
             chosenId={activeRef?.facilityId}
             onChoose={(ref, name, service) => {
               setFacilityRef({ ref, name });
@@ -164,28 +204,34 @@ function NewReferral() {
             }}
           />
           <div>
-            <label htmlFor="dest" className="field-label">Destination facility *</label>
-            <input id="dest" className="field" list="facilities" value={f.destination} onChange={set("destination")} aria-invalid={tried && missing.destination} />
-            <datalist id="facilities">{FACILITIES.map((x) => <option key={x} value={x} />)}</datalist>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {FACILITIES.map((x) => (
-                <button key={x} type="button" onClick={() => setF({ ...f, destination: x })} className={`min-h-10 rounded-full border px-3 text-sm ${f.destination === x ? "border-primary bg-primary-soft font-semibold text-accent-foreground" : "border-input bg-card"}`}>
-                  {x}
-                </button>
-              ))}
-            </div>
+            <label htmlFor="dest" className="field-label">{tr("destination")} *</label>
+            <input id="dest" className="field" value={f.destination} onChange={set("destination")} aria-invalid={tried && missing.destination} />
             {tried && missing.destination && <p className="mt-1 text-sm text-destructive">Destination is required.</p>}
           </div>
           <div>
-            <label htmlFor="dept" className="field-label">Department / service</label>
+            <label htmlFor="ftype" className="field-label">{tr("facility_type")}</label>
+            {activeRef ? (
+              <>
+                <p id="ftype" className="field flex items-center bg-secondary font-semibold" aria-readonly="true">{facilityTypeLabel(facilityType, lang)}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{tr("ft_locked")}</p>
+              </>
+            ) : (
+              <select id="ftype" className="field" value={manualType} onChange={(e) => setManualType(e.target.value)}>
+                <option value="">{tr("ft_choose")}</option>
+                {FACILITY_TYPES.map((x) => <option key={x.id} value={x.id}>{x[lang]}</option>)}
+              </select>
+            )}
+          </div>
+          <div>
+            <label htmlFor="dept" className="field-label">{tr("department")}</label>
             <input id="dept" className="field" placeholder="e.g. Outpatient department" value={f.department} onChange={set("department")} />
           </div>
           <div>
-            <label htmlFor="ctx" className="field-label">Referral note / context <span className="font-normal text-muted-foreground">(optional)</span></label>
+            <label htmlFor="ctx" className="field-label">{tr("context")} <span className="font-normal text-muted-foreground">(optional)</span></label>
             <textarea id="ctx" rows={2} className="field py-3" placeholder="Logistics only — no clinical details" value={f.context} onChange={set("context")} />
           </div>
           <button type="submit" className="btn-primary w-full">
-            Continue <ArrowRight className="h-5 w-5" aria-hidden />
+            {tr("continue")} <ArrowRight className="h-5 w-5" aria-hidden />
           </button>
         </form>
       ) : (
@@ -193,10 +239,10 @@ function NewReferral() {
           <div className="surface flex items-center justify-between p-3 text-sm">
             <span>
               <span className="font-mono font-bold">{f.patientId.toUpperCase()}</span>
-              <span className="text-muted-foreground"> → {f.destination}</span>
+              <span className="text-muted-foreground"> → {f.destination}{facilityType ? ` · ${facilityTypeLabel(facilityType, lang)}` : ""}</span>
             </span>
             <button type="button" className="btn-ghost min-h-10 px-3 text-sm" onClick={() => setStep(1)}>
-              <ArrowLeft className="h-4 w-4" aria-hidden /> Edit
+              <ArrowLeft className="h-4 w-4" aria-hidden /> {tr("edit")}
             </button>
           </div>
           {activeRef && activeRef.constraints.length > 0 && (
@@ -210,7 +256,7 @@ function NewReferral() {
           {saveError && <p role="alert" className="text-destructive">{saveError}</p>}
           <div className="space-y-2">
             <button type="button" className="btn-primary w-full" disabled={!reviewComplete(review) || saving} onClick={save}>
-              <Save className="h-5 w-5" aria-hidden /> Confirm & save
+              <Save className="h-5 w-5" aria-hidden /> {tr("confirm_save")}
             </button>
             {!reviewComplete(review) && (
               <p className="text-center text-sm text-muted-foreground">
