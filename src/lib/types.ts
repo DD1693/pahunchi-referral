@@ -24,12 +24,19 @@ export type HistoryType =
   | "rescheduled"
   | "not_completed"
   | "completed"
-  | "synced";
+  | "synced"
+  | "action_planned";
 
 export interface HistoryEvent {
   type: HistoryType;
   at: string; // ISO timestamp
   detail?: string;
+}
+
+export interface PlannedAction {
+  barrier: BarrierLabel;
+  action: string; // fixed prompt text chosen by the health worker
+  at: string;
 }
 
 export interface WorkerNote {
@@ -49,6 +56,8 @@ export interface Referral {
   /** Human-confirmed barriers only. Never raw AI output. */
   confirmedBarriers: BarrierLabel[];
   noBarrierConfirmed: boolean;
+  /** Fixed follow-up prompts chosen by the worker. Optional for older records. */
+  plannedActions?: PlannedAction[];
   outcome: Outcome;
   syncState: "synced" | "pending";
   isDemo: boolean;

@@ -110,6 +110,19 @@ function Insights() {
             );
           })}
         </ul>
+        <p className="text-sm">
+          Pahunchi uses a small on-device classifier to suggest non-clinical referral barriers from Hindi, Roman Hindi and
+          limited Hinglish notes. Suggestions require health-worker confirmation. The model does not diagnose, recommend
+          treatment or determine medical urgency.
+        </p>
+        <p className="text-sm text-muted-foreground">
+          Inference happens on this device. The classifier helps structure non-clinical barrier information; its scores are
+          not calibrated probabilities and are not shown.
+        </p>
+        <p className="rounded-xl bg-secondary p-3 text-sm">
+          Referral records in this prototype are stored locally on this device. Pahunchi does not automatically send patient
+          information to a server. Do not enter names, phone numbers, clinical results or other identifying information.
+        </p>
         <p className="text-xs text-muted-foreground">
           Model: {MODEL_INFO.name} v{MODEL_INFO.version} · {modelReady() ? "loaded on this device" : "could not be loaded"}
         </p>

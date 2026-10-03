@@ -27,7 +27,7 @@ function Home() {
     { label: "Needs follow-up", value: referrals.filter((r) => needsFollowUp(r)).length, icon: AlertCircle, tone: "text-attention-foreground bg-attention-soft" },
     { label: "Due soon", value: referrals.filter((r) => dueSoon(r)).length, icon: CalendarClock, tone: "text-accent-foreground bg-primary-soft" },
     { label: "Completed", value: referrals.filter((r) => r.outcome === "completed").length, icon: CheckCircle2, tone: "text-success bg-success-soft" },
-    { label: "Waiting to sync", value: referrals.filter((r) => r.syncState === "pending").length, icon: CloudUpload, tone: "text-muted-foreground bg-muted" },
+    { label: "Stored offline", value: referrals.length, icon: CloudUpload, tone: "text-muted-foreground bg-muted" },
   ];
 
   return (
@@ -72,7 +72,7 @@ function Home() {
         </div>
         {info && (
           <p id="priority-info" className="rounded-xl bg-secondary p-3 text-sm text-secondary-foreground">
-            Priority is based on follow-up dates and confirmed barriers. It is not a medical risk score.
+            Follow-up order is based on referral and follow-up dates. Confirmed barriers provide context; they do not determine medical urgency.
           </p>
         )}
         {!loaded ? (

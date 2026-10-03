@@ -43,16 +43,16 @@ export function ReferralCard({ r, showSync = false }: { r: Referral; showSync?: 
             </span>
           </span>
         </div>
-        {(r.confirmedBarriers.length > 0 || (showSync && r.syncState === "pending")) && (
+        {(r.confirmedBarriers.length > 0 || showSync) && (
           <div className="flex flex-wrap gap-1.5">
             {r.confirmedBarriers.map((b) => (
               <span key={b} className="chip-barrier">
                 {barrierMeta(b).en}
               </span>
             ))}
-            {showSync && r.syncState === "pending" && (
-              <span className="chip-pending">
-                <CloudUpload className="h-3.5 w-3.5" aria-hidden /> Waiting to sync
+            {showSync && (
+              <span className="chip-demo" title="Stored locally on this device.">
+                <CloudUpload className="h-3.5 w-3.5" aria-hidden /> Stored offline
               </span>
             )}
           </div>

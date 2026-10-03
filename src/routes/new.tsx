@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, Lock, Save } from "lucide-react";
 import { useState } from "react";
 import { BarrierReview, emptyReview, reviewComplete, type ReviewState } from "@/components/BarrierReview";
 import { addDays, todayISO } from "@/lib/followup";
+import { FollowUpSupport } from "@/components/FollowUpSupport";
 import { saveReferral, uid } from "@/lib/store";
 import type { HistoryEvent, Referral } from "@/lib/types";
 
@@ -40,6 +41,7 @@ function NewReferral() {
   const [review, setReview] = useState<ReviewState>(emptyReview());
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [saved, setSaved] = useState<Referral | null>(null);
 
   const missing = {
     patientId: !f.patientId.trim(),
@@ -82,12 +84,28 @@ function NewReferral() {
     };
     try {
       await saveReferral(r);
+      if (r.confirmedBarriers.length > 0) {
+        setSaved(r);
+        return;
+      }
       navigate({ to: "/referral", search: { id: r.id } });
     } catch (e) {
       console.error(e);
       setSaveError("Could not save on this device. Please try again.");
       setSaving(false);
     }
+  }
+
+  if (saved) {
+    const done = () => navigate({ to: "/referral", search: { id: saved.id } });
+    return (
+      <div className="space-y-5">
+        <p role="status" className="rounded-xl bg-success-soft p-3 font-semibold text-success">
+          Referral {saved.patientId} saved on this device.
+        </p>
+        <FollowUpSupport r={saved} onDone={done} doneLabel="Continue without actions" />
+      </div>
+    );
   }
 
   return (
