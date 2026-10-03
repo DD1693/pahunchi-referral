@@ -1,5 +1,5 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Lock, Save } from "lucide-react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { ArrowLeft, ArrowRight, Lock, Printer, Save } from "lucide-react";
 import { useState } from "react";
 import { BarrierReview, emptyReview, reviewComplete, type ReviewState } from "@/components/BarrierReview";
 import { addDays, todayISO } from "@/lib/followup";
@@ -11,8 +11,6 @@ import { FacilityFinder } from "@/components/FacilityFinder";
 import { constraintLabel } from "@/lib/facilities/constraints";
 import { FACILITY_TYPES, facilityById, facilityTypeLabel } from "@/lib/facilities/data";
 import { useLang, useT } from "@/lib/i18n";
-import { Printer } from "lucide-react";
-import { Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/new")({
   validateSearch: (s: Record<string, unknown>): { onward?: string } => (typeof s["onward"] === "string" ? { onward: s["onward"] } : {}),
