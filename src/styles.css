@@ -94,51 +94,49 @@
   }
 }
 
-@layer components {
-  .surface {
-    @apply rounded-2xl border border-border bg-card text-card-foreground shadow-[0_1px_2px_oklch(0.3_0.03_190/0.06)];
-  }
-  .btn {
-    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-5 text-base font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50;
-  }
-  .btn-primary {
-    @apply btn bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80;
-  }
-  .btn-secondary {
-    @apply btn border border-input bg-card text-foreground hover:bg-secondary;
-  }
-  .btn-ghost {
-    @apply btn text-primary hover:bg-primary-soft;
-  }
-  .field-label {
-    @apply mb-1.5 block text-sm font-semibold text-foreground;
-  }
-  .field {
-    @apply block min-h-12 w-full rounded-xl border border-input bg-card px-4 text-base text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/40;
-  }
-  .chip {
-    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium;
-  }
-  .chip-barrier {
-    @apply chip bg-primary-soft text-accent-foreground;
-  }
-  .chip-demo {
-    @apply chip bg-muted text-muted-foreground ring-1 ring-border;
-  }
-  .chip-pending {
-    @apply chip bg-attention-soft text-attention-foreground;
-  }
-  .chip-ai {
-    @apply chip bg-ai-soft text-ai;
-  }
-  .chip-human {
-    @apply chip bg-success-soft text-success;
-  }
-  .eyebrow {
-    @apply text-xs font-semibold uppercase tracking-wider text-muted-foreground;
-  }
-  .hindi {
-    font-family: "Noto Sans Devanagari", "Mangal", var(--font-sans);
-    line-height: 1.6;
-  }
+@utility surface {
+  @apply rounded-2xl border border-border bg-card text-card-foreground shadow-[0_1px_2px_oklch(0.3_0.03_190/0.06)];
+}
+@utility btn {
+  @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-5 text-base font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary {
+  @apply btn bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80;
+}
+@utility btn-secondary {
+  @apply btn border border-input bg-card text-foreground hover:bg-secondary;
+}
+@utility btn-ghost {
+  @apply btn text-primary hover:bg-primary-soft;
+}
+@utility field-label {
+  @apply mb-1.5 block text-sm font-semibold text-foreground;
+}
+@utility field {
+  @apply block min-h-12 w-full rounded-xl border border-input bg-card px-4 text-base text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/40;
+}
+@utility chip {
+  @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium;
+}
+@utility chip-barrier {
+  @apply chip bg-primary-soft text-accent-foreground;
+}
+@utility chip-demo {
+  @apply chip bg-muted text-muted-foreground ring-1 ring-border;
+}
+@utility chip-pending {
+  @apply chip bg-attention-soft text-attention-foreground;
+}
+@utility chip-ai {
+  @apply chip bg-ai-soft text-ai;
+}
+@utility chip-human {
+  @apply chip bg-success-soft text-success;
+}
+@utility eyebrow {
+  @apply text-xs font-semibold uppercase tracking-wider text-muted-foreground;
+}
+@utility hindi {
+  font-family: "Noto Sans Devanagari", "Mangal", var(--font-sans);
+  line-height: 1.6;
 }
