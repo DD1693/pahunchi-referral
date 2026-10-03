@@ -1,0 +1,864 @@
+{
+ "cv_model_comparison_train_only": {
+  "lr_lambda_1e-05": 0.468,
+  "lr_lambda_3e-05": 0.455,
+  "lr_lambda_0.0001": 0.431,
+  "lr_lambda_0.0003": 0.365,
+  "lr_lambda_0.001": 0.243,
+  "naive_bayes": 0.3
+ },
+ "chosen": "lr_lambda_1e-05",
+ "thresholds": {
+  "access_cost": 0.2,
+  "household_constraint": 0.3,
+  "fear_hesitancy": 0.2,
+  "work_caregiving": 0.2,
+  "understanding_information": 0.25
+ },
+ "cv_per_label_train_only": {
+  "access_cost": {
+   "precision": 0.44,
+   "recall": 0.524,
+   "f1": 0.478
+  },
+  "household_constraint": {
+   "precision": 0.658,
+   "recall": 0.658,
+   "f1": 0.658
+  },
+  "fear_hesitancy": {
+   "precision": 0.429,
+   "recall": 0.31,
+   "f1": 0.36
+  },
+  "work_caregiving": {
+   "precision": 0.5,
+   "recall": 0.471,
+   "f1": 0.485
+  },
+  "understanding_information": {
+   "precision": 0.679,
+   "recall": 0.613,
+   "f1": 0.644
+  }
+ },
+ "test_per_label": {
+  "access_cost": {
+   "support": 11,
+   "precision": 0.5,
+   "recall": 0.455,
+   "f1": 0.476,
+   "tp": 5,
+   "fp": 5,
+   "fn": 6
+  },
+  "household_constraint": {
+   "support": 7,
+   "precision": 0.667,
+   "recall": 0.571,
+   "f1": 0.615,
+   "tp": 4,
+   "fp": 2,
+   "fn": 3
+  },
+  "fear_hesitancy": {
+   "support": 7,
+   "precision": 0.333,
+   "recall": 0.286,
+   "f1": 0.308,
+   "tp": 2,
+   "fp": 4,
+   "fn": 5
+  },
+  "work_caregiving": {
+   "support": 9,
+   "precision": 0.625,
+   "recall": 0.556,
+   "f1": 0.588,
+   "tp": 5,
+   "fp": 3,
+   "fn": 4
+  },
+  "understanding_information": {
+   "support": 6,
+   "precision": 0.8,
+   "recall": 0.667,
+   "f1": 0.727,
+   "tp": 4,
+   "fp": 1,
+   "fn": 2
+  }
+ },
+ "test_micro_f1": 0.533,
+ "test_macro_f1": 0.543,
+ "test_exact_match": 0.3,
+ "test_hamming_loss": 0.175,
+ "test_all_zero_rows_correctly_abstained": "4/7",
+ "test_barrier_rows_where_model_abstained(not sure)": "11/33",
+ "test_exact_match_by_language_style": {
+  "hindi_devanagari": {
+   "n": 20,
+   "exact_match": 0.35
+  },
+  "hinglish": {
+   "n": 7,
+   "exact_match": 0.143
+  },
+  "mixed": {
+   "n": 3,
+   "exact_match": 0.333
+  },
+  "roman_hindi": {
+   "n": 10,
+   "exact_match": 0.3
+  }
+ },
+ "model_size": {
+  "vocab_features": 2372,
+  "json_bytes": 143364
+ },
+ "test_rows": [
+  {
+   "id": "TE001",
+   "text_hi": "बस वाला बोला रूट बंद है, कब चालू होगा पता नहीं",
+   "difficulty": "medium",
+   "style": "hindi_devanagari",
+   "gold": [
+    "access_cost"
+   ],
+   "pred": [],
+   "probs": {
+    "access_cost": 0.02,
+    "household_constraint": 0.01,
+    "fear_hesitancy": 0.0,
+    "work_caregiving": 0.0,
+    "understanding_information": 0.15
+   }
+  },
+  {
+   "id": "TE002",
+   "text_hi": "हाथ तंग है इस महीने",
+   "difficulty": "hard",
+   "style": "hindi_devanagari",
+   "gold": [
+    "access_cost"
+   ],
+   "pred": [],
+   "probs": {
+    "access_cost": 0.01,
+    "household_constraint": 0.07,
+    "fear_hesitancy": 0.01,
+    "work_caregiving": 0.0,
+    "understanding_information": 0.0
+   }
+  },
+  {
+   "id": "TE003",
+   "text_hi": "बड़े भैया जब तक हां न कहें, कहीं नहीं जाती",
+   "difficulty": "medium",
+   "style": "hindi_devanagari",
+   "gold": [
+    "household_constraint"
+   ],
+   "pred": [
+    "access_cost"
+   ],
+   "probs": {
+    "access_cost": 0.37,
+    "household_constraint": 0.01,
+    "fear_hesitancy": 0.11,
+    "work_caregiving": 0.0,
+    "understanding_information": 0.17
+   }
+  },
+  {
+   "id": "TE004",
+   "text_hi": "पति साथ गए थे पिछली बार, इस बार भी जाएंगे",
+   "difficulty": "hard",
+   "style": "hindi_devanagari",
+   "gold": [],
+   "pred": [],
+   "probs": {
+    "access_cost": 0.01,
+    "household_constraint": 0.24,
+    "fear_hesitancy": 0.08,
+    "work_caregiving": 0.0,
+    "understanding_information": 0.0
+   }
+  },
+  {
+   "id": "TE005",
+   "text_hi": "डाक्टर के पास जाने के नाम से कांपने लगती है",
+   "difficulty": "medium",
+   "style": "hindi_devanagari",
+   "gold": [
+    "fear_hesitancy"
+   ],
+   "pred": [
+    "fear_hesitancy"
+   ],
+   "probs": {
+    "access_cost": 0.04,
+    "household_constraint": 0.0,
+    "fear_hesitancy": 0.35,
+    "work_caregiving": 0.02,
+    "understanding_information": 0.01
+   }
+  },
+  {
+   "id": "TE006",
+   "text_hi": "कटाई खतम होते ही जाएगी, अभी फुरसत नहीं",
+   "difficulty": "medium",
+   "style": "hindi_devanagari",
+   "gold": [
+    "work_caregiving"
+   ],
+   "pred": [],
+   "probs": {
+    "access_cost": 0.08,
+    "household_constraint": 0.02,
+    "fear_hesitancy": 0.03,
+    "work_caregiving": 0.02,
+    "understanding_information": 0.0
+   }
+  },
+  {
+   "id": "TE007",
+   "text_hi": "उसे लगा बात खत्म, दवा जो मिल गई",
+   "difficulty": "medium",
+   "style": "hindi_devanagari",
+   "gold": [
+    "understanding_information"
+   ],
+   "pred": [
+    "understanding_information"
+   ],
+   "probs": {
+    "access_cost": 0.0,
+    "household_constraint": 0.0,
+    "fear_hesitancy": 0.0,
+    "work_caregiving": 0.02,
+    "understanding_information": 0.96
+   }
+  },
+  {
+   "id": "TE008",
+   "text_hi": "पैसा नहीं है, डर कोई नहीं",
+   "difficulty": "hard",
+   "style": "hindi_devanagari",
+   "gold": [
+    "access_cost"
+   ],
+   "pred": [
+    "access_cost"
+   ],
+   "probs": {
+    "access_cost": 0.99,
+    "household_constraint": 0.06,
+    "fear_hesitancy": 0.01,
+    "work_caregiving": 0.0,
+    "understanding_information": 0.0
+   }
+  },
+  {
+   "id": "TE009",
+   "text_hi": "मायके गई हुई है, लौटकर बात करेंगे",
+   "difficulty": "hard",
+   "style": "hindi_devanagari",
+   "gold": [],
+   "pred": [],
+   "probs": {
+    "access_cost": 0.0,
+    "household_constraint": 0.01,
+    "fear_hesitancy": 0.2,
+    "work_caregiving": 0.0,
+    "understanding_information": 0.0
+   }
+  },
+  {
+   "id": "TE010",
+   "text_hi": "छोटे वाले को बुखार है, उसे छोड़ नहीं सकती अभी",
+   "difficulty": "medium",
+   "style": "hindi_devanagari",
+   "gold": [
+    "work_caregiving"
+   ],
+   "pred": [
+    "work_caregiving"
+   ],
+   "probs": {
+    "access_cost": 0.0,
+    "household_constraint": 0.01,
+    "fear_hesitancy": 0.0,
+    "work_caregiving": 0.46,
+    "understanding_information": 0.09
+   }
+  },
+  {
+   "id": "TE011",
+   "text_hi": "सरपंच से गाड़ी मांगी थी, नहीं मिली",
+   "difficulty": "hard",
+   "style": "hindi_devanagari",
+   "gold": [
+    "access_cost"
+   ],
+   "pred": [
+    "fear_hesitancy"
+   ],
+   "probs": {
+    "access_cost": 0.02,
+    "household_constraint": 0.0,
+    "fear_hesitancy": 0.21,
+    "work_caregiving": 0.0,
+    "understanding_information": 0.15
+   }
+  },
+  {
+   "id": "TE012",
+   "text_hi": "लोग क्या सोचेंगे, ये बात उसे खाए जा रही है",
+   "difficulty": "medium",
+   "style": "hindi_devanagari",
+   "gold": [
+    "fear_hesitancy"
+   ],
+   "pred": [
+    "understanding_information"
+   ],
+   "probs": {
+    "access_cost": 0.0,
+    "household_constraint": 0.0,
+    "fear_hesitancy": 0.07,
+    "work_caregiving": 0.0,
+    "understanding_information": 0.93
+   }
+  },
+  {
+   "id": "TE013",
+   "text_hi": "काम भी, पैसा भी, सब दिक्कत है",
+   "difficulty": "hard",
+   "style": "hindi_devanagari",
+   "gold": [
+    "access_cost",
+    "work_caregiving"
+   ],
+   "pred": [
+    "access_cost",
+    "work_caregiving"
+   ],
+   "probs": {
+    "access_cost": 0.66,
+    "household_constraint": 0.0,
+    "fear_hesitancy": 0.0,
+    "work_caregiving": 0.97,
+    "understanding_information": 0.0
+   }
+  },
+  {
+   "id": "TE014",
+   "text_hi": "ASHA ने समझाया फिर भी बोली जरूरत नही",
+   "difficulty": "hard",
+   "style": "mixed",
+   "gold": [
+    "understanding_information"
+   ],
+   "pred": [
+    "understanding_information"
+   ],
+   "probs": {
+    "access_cost": 0.0,
+    "household_constraint": 0.0,
+    "fear_hesitancy": 0.06,
+    "work_caregiving": 0.0,
+    "understanding_information": 0.61
+   }
+  },
+  {
+   "id": "TE015",
+   "text_hi": "पति परदेस में, सास बीमार, सब उसी पे",
+   "difficulty": "hard",
+   "style": "hindi_devanagari",
+   "gold": [
+    "work_caregiving"
+   ],
+   "pred": [
+    "household_constraint",
+    "work_caregiving"
+   ],
+   "probs": {
+    "access_cost": 0.0,
+    "household_constraint": 0.67,
+    "fear_hesitancy": 0.0,
+    "work_caregiving": 0.9,
+    "understanding_information": 0.0
+   }
+  },
+  {
+   "id": "TE016",
+   "text_hi": "ससुराल वाले बोले जांच-वांच कुछ नहीं, और उसे भी डर है",
+   "difficulty": "medium",
+   "style": "hindi_devanagari",
+   "gold": [
+    "household_constraint",
+    "fear_hesitancy"
+   ],
+   "pred": [
+    "household_constraint"
+   ],
+   "probs": {
+    "access_cost": 0.02,
+    "household_constraint": 0.53,
+    "fear_hesitancy": 0.1,
+    "work_caregiving": 0.01,
+    "understanding_information": 0.16
+   }
+  },
+  {
+   "id": "TE017",
+   "text_hi": "रास्ते में नाला है, बारिश में रास्ता बंद, और पति भी इजाजत नहीं देंगे",
+   "difficulty": "medium",
+   "style": "hindi_devanagari",
+   "gold": [
+    "access_cost",
+    "household_constraint"
+   ],
+   "pred": [
+    "access_cost",
+    "household_constraint",
+    "work_caregiving"
+   ],
+   "probs": {
+    "access_cost": 0.69,
+    "household_constraint": 0.79,
+    "fear_hesitancy": 0.13,
+    "work_caregiving": 0.25,
+    "understanding_information": 0.0
+   }
+  },
+  {
+   "id": "TE018",
+   "text_hi": "कब जाना था भूल गई, और खेत भी देखना है",
+   "difficulty": "medium",
+   "style": "hindi_devanagari",
+   "gold": [
+    "work_caregiving",
+    "understanding_information"
+   ],
+   "pred": [
+    "fear_hesitancy",
+    "work_caregiving",
+    "understanding_information"
+   ],
+   "probs": {
+    "access_cost": 0.02,
+    "household_constraint": 0.01,
+    "fear_hesitancy": 0.24,
+    "work_caregiving": 0.88,
+    "understanding_information": 0.43
+   }
+  },
+  {
+   "id": "TE019",
+   "text_hi": "बोली भगवान की मर्जी, जो होगा देखा जाएगा",
+   "difficulty": "hard",
+   "style": "hindi_devanagari",
+   "gold": [
+    "fear_hesitancy"
+   ],
+   "pred": [],
+   "probs": {
+    "access_cost": 0.0,
+    "household_constraint": 0.01,
+    "fear_hesitancy": 0.01,
+    "work_caregiving": 0.01,
+    "understanding_information": 0.09
+   }
+  },
+  {
+   "id": "TE020",
+   "text_hi": "अस्पताल में डॉक्टर की कमी है ऐसा सुना है",
+   "difficulty": "hard",
+   "style": "hindi_devanagari",
+   "gold": [],
+   "pred": [
+    "work_caregiving"
+   ],
+   "probs": {
+    "access_cost": 0.01,
+    "household_constraint": 0.03,
+    "fear_hesitancy": 0.0,
+    "work_caregiving": 0.54,
+    "understanding_information": 0.0
+   }
+  },
+  {
+   "id": "TE021",
+   "text_hi": "पैसे की बात नहीं, बस साथ जाने वाला चाहिए",
+   "difficulty": "hard",
+   "style": "hindi_devanagari",
+   "gold": [
+    "household_constraint"
+   ],
+   "pred": [
+    "access_cost",
+    "household_constraint"
+   ],
+   "probs": {
+    "access_cost": 0.4,
+    "household_constraint": 0.83,
+    "fear_hesitancy": 0.0,
+    "work_caregiving": 0.0,
+    "understanding_information": 0.0
+   }
+  },
+  {
+   "id": "TE022",
+   "text_hi": "kiraya nai h",
+   "difficulty": "medium",
+   "style": "roman_hindi",
+   "gold": [
+    "access_cost"
+   ],
+   "pred": [],
+   "probs": {
+    "access_cost": 0.01,
+    "household_constraint": 0.03,
+    "fear_hesitancy": 0.01,
+    "work_caregiving": 0.02,
+    "understanding_information": 0.09
+   }
+  },
+  {
+   "id": "TE023",
+   "text_hi": "ghrwale mana kr rhe",
+   "difficulty": "medium",
+   "style": "roman_hindi",
+   "gold": [
+    "household_constraint"
+   ],
+   "pred": [
+    "household_constraint"
+   ],
+   "probs": {
+    "access_cost": 0.01,
+    "household_constraint": 0.4,
+    "fear_hesitancy": 0.0,
+    "work_caregiving": 0.01,
+    "understanding_information": 0.0
+   }
+  },
+  {
+   "id": "TE024",
+   "text_hi": "report dekh ke bahut ghabra rahi thi",
+   "difficulty": "easy",
+   "style": "roman_hindi",
+   "gold": [
+    "fear_hesitancy"
+   ],
+   "pred": [],
+   "probs": {
+    "access_cost": 0.03,
+    "household_constraint": 0.0,
+    "fear_hesitancy": 0.01,
+    "work_caregiving": 0.01,
+    "understanding_information": 0.0
+   }
+  },
+  {
+   "id": "TE025",
+   "text_hi": "dihadi ka nuksan hoga",
+   "difficulty": "medium",
+   "style": "roman_hindi",
+   "gold": [
+    "work_caregiving"
+   ],
+   "pred": [
+    "access_cost"
+   ],
+   "probs": {
+    "access_cost": 0.87,
+    "household_constraint": 0.0,
+    "fear_hesitancy": 0.0,
+    "work_caregiving": 0.03,
+    "understanding_information": 0.02
+   }
+  },
+  {
+   "id": "TE026",
+   "text_hi": "wahan jaake kisse milna hai, kuch idea nahi usko",
+   "difficulty": "easy",
+   "style": "roman_hindi",
+   "gold": [
+    "understanding_information"
+   ],
+   "pred": [],
+   "probs": {
+    "access_cost": 0.04,
+    "household_constraint": 0.02,
+    "fear_hesitancy": 0.01,
+    "work_caregiving": 0.08,
+    "understanding_information": 0.15
+   }
+  },
+  {
+   "id": "TE027",
+   "text_hi": "kal koi mila nahi",
+   "difficulty": "medium",
+   "style": "roman_hindi",
+   "gold": [],
+   "pred": [],
+   "probs": {
+    "access_cost": 0.16,
+    "household_constraint": 0.04,
+    "fear_hesitancy": 0.0,
+    "work_caregiving": 0.03,
+    "understanding_information": 0.01
+   }
+  },
+  {
+   "id": "TE028",
+   "text_hi": "pati le jayenge, paise ka intezam hai",
+   "difficulty": "hard",
+   "style": "roman_hindi",
+   "gold": [],
+   "pred": [
+    "access_cost"
+   ],
+   "probs": {
+    "access_cost": 0.81,
+    "household_constraint": 0.15,
+    "fear_hesitancy": 0.0,
+    "work_caregiving": 0.01,
+    "understanding_information": 0.0
+   }
+  },
+  {
+   "id": "TE029",
+   "text_hi": "saas ki seva, bachche, khet... time hi nahi",
+   "difficulty": "medium",
+   "style": "roman_hindi",
+   "gold": [
+    "work_caregiving"
+   ],
+   "pred": [
+    "work_caregiving"
+   ],
+   "probs": {
+    "access_cost": 0.0,
+    "household_constraint": 0.08,
+    "fear_hesitancy": 0.0,
+    "work_caregiving": 0.92,
+    "understanding_information": 0.02
+   }
+  },
+  {
+   "id": "TE030",
+   "text_hi": "dar to hai par jayegi",
+   "difficulty": "hard",
+   "style": "roman_hindi",
+   "gold": [
+    "fear_hesitancy"
+   ],
+   "pred": [],
+   "probs": {
+    "access_cost": 0.0,
+    "household_constraint": 0.01,
+    "fear_hesitancy": 0.03,
+    "work_caregiving": 0.13,
+    "understanding_information": 0.01
+   }
+  },
+  {
+   "id": "TE031",
+   "text_hi": "door bahut h aur akele nahi jaa sakti",
+   "difficulty": "medium",
+   "style": "roman_hindi",
+   "gold": [
+    "access_cost",
+    "household_constraint"
+   ],
+   "pred": [
+    "access_cost"
+   ],
+   "probs": {
+    "access_cost": 0.86,
+    "household_constraint": 0.01,
+    "fear_hesitancy": 0.04,
+    "work_caregiving": 0.02,
+    "understanding_information": 0.04
+   }
+  },
+  {
+   "id": "TE032",
+   "text_hi": "is month budget nahi hai",
+   "difficulty": "medium",
+   "style": "hinglish",
+   "gold": [
+    "access_cost"
+   ],
+   "pred": [],
+   "probs": {
+    "access_cost": 0.01,
+    "household_constraint": 0.03,
+    "fear_hesitancy": 0.11,
+    "work_caregiving": 0.02,
+    "understanding_information": 0.03
+   }
+  },
+  {
+   "id": "TE033",
+   "text_hi": "in-laws allow nahi kar rahe",
+   "difficulty": "easy",
+   "style": "hinglish",
+   "gold": [
+    "household_constraint"
+   ],
+   "pred": [],
+   "probs": {
+    "access_cost": 0.11,
+    "household_constraint": 0.25,
+    "fear_hesitancy": 0.0,
+    "work_caregiving": 0.01,
+    "understanding_information": 0.0
+   }
+  },
+  {
+   "id": "TE034",
+   "text_hi": "hospital ko leke anxiety hai",
+   "difficulty": "easy",
+   "style": "hinglish",
+   "gold": [
+    "fear_hesitancy"
+   ],
+   "pred": [
+    "access_cost",
+    "fear_hesitancy"
+   ],
+   "probs": {
+    "access_cost": 0.48,
+    "household_constraint": 0.0,
+    "fear_hesitancy": 0.69,
+    "work_caregiving": 0.0,
+    "understanding_information": 0.0
+   }
+  },
+  {
+   "id": "TE035",
+   "text_hi": "shift duty hai, off nahi milta",
+   "difficulty": "easy",
+   "style": "hinglish",
+   "gold": [
+    "work_caregiving"
+   ],
+   "pred": [
+    "fear_hesitancy"
+   ],
+   "probs": {
+    "access_cost": 0.04,
+    "household_constraint": 0.0,
+    "fear_hesitancy": 0.27,
+    "work_caregiving": 0.07,
+    "understanding_information": 0.01
+   }
+  },
+  {
+   "id": "TE036",
+   "text_hi": "usko laga follow up optional hai",
+   "difficulty": "medium",
+   "style": "hinglish",
+   "gold": [
+    "understanding_information"
+   ],
+   "pred": [
+    "fear_hesitancy"
+   ],
+   "probs": {
+    "access_cost": 0.01,
+    "household_constraint": 0.01,
+    "fear_hesitancy": 0.35,
+    "work_caregiving": 0.0,
+    "understanding_information": 0.1
+   }
+  },
+  {
+   "id": "TE037",
+   "text_hi": "sab theek hai, next visit pe confirm karenge",
+   "difficulty": "medium",
+   "style": "hinglish",
+   "gold": [],
+   "pred": [],
+   "probs": {
+    "access_cost": 0.0,
+    "household_constraint": 0.01,
+    "fear_hesitancy": 0.01,
+    "work_caregiving": 0.1,
+    "understanding_information": 0.13
+   }
+  },
+  {
+   "id": "TE038",
+   "text_hi": "money problem + child ko koi dekhne wala nahi",
+   "difficulty": "medium",
+   "style": "hinglish",
+   "gold": [
+    "access_cost",
+    "work_caregiving"
+   ],
+   "pred": [],
+   "probs": {
+    "access_cost": 0.01,
+    "household_constraint": 0.28,
+    "fear_hesitancy": 0.0,
+    "work_caregiving": 0.02,
+    "understanding_information": 0.0
+   }
+  },
+  {
+   "id": "TE039",
+   "text_hi": "husband की permission है, बस date fix करनी है",
+   "difficulty": "hard",
+   "style": "mixed",
+   "gold": [],
+   "pred": [
+    "household_constraint"
+   ],
+   "probs": {
+    "access_cost": 0.02,
+    "household_constraint": 0.99,
+    "fear_hesitancy": 0.0,
+    "work_caregiving": 0.0,
+    "understanding_information": 0.0
+   }
+  },
+  {
+   "id": "TE040",
+   "text_hi": "उसे लगता है report normal है, और travel का खर्च भी",
+   "difficulty": "medium",
+   "style": "mixed",
+   "gold": [
+    "access_cost",
+    "understanding_information"
+   ],
+   "pred": [
+    "access_cost",
+    "work_caregiving",
+    "understanding_information"
+   ],
+   "probs": {
+    "access_cost": 0.98,
+    "household_constraint": 0.01,
+    "fear_hesitancy": 0.0,
+    "work_caregiving": 0.94,
+    "understanding_information": 0.51
+   }
+  }
+ ],
+ "test_outcome_categories": {
+  "exact_correct": 8,
+  "abstained_on_barrier_row(safe: routed to human)": 11,
+  "partially_correct(some right, some missed/extra)": 8,
+  "wrong_labels_only(no overlap)": 6,
+  "false_alarm_on_no_barrier_row": 3,
+  "correct_abstain_on_no_barrier_row": 4
+ },
+ "evaluation_history_note": "The test set was scored twice. Run 1 used an under-regularised-grid configuration (lambda=0.001, gradient descent) whose underfitting was visible in train-only CV. The optimiser and lambda grid were then changed using train-only CV evidence and the test set was scored a second, final time. Because the test set was viewed twice, treat the reported numbers as slightly optimistic. Run 1 test micro-F1 was 0.565; final run micro-F1 0.533."
+}
