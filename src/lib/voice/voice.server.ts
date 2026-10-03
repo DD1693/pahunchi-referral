@@ -26,7 +26,7 @@ export class VoiceError extends Error {
 
 export function checkPasscode(given: string): void {
   const expected = process.env["PAHUNCHI_DEMO_PASSCODE"];
-  if (!expected) throw new VoiceError(503, "Demo passcode is not configured on the server.");
+  if (!expected) throw new VoiceError(424, "Demo passcode is not configured on the server.");
   const a = createHash("sha256").update(given).digest();
   const b = createHash("sha256").update(expected).digest();
   if (!timingSafeEqual(a, b)) throw new VoiceError(401, "Incorrect demo passcode.");
@@ -34,7 +34,7 @@ export function checkPasscode(given: string): void {
 
 export async function transcribe(audio: Blob): Promise<string> {
   const key = process.env["ELEVENLABS_API_KEY"];
-  if (!key) throw new VoiceError(503, "Transcription service is not configured.");
+  if (!key) throw new VoiceError(424, "Transcription service is not configured.");
   const fd = new FormData();
   fd.append("file", audio, "recording.webm");
   fd.append("model_id", "scribe_v2");
@@ -42,7 +42,7 @@ export async function transcribe(audio: Blob): Promise<string> {
   const res = await fetch("https://api.elevenlabs.io/v1/speech-to-text", { method: "POST", headers: { "xi-api-key": key }, body: fd });
   if (!res.ok) {
     console.error(`ElevenLabs transcription failed [${res.status}]`);
-    throw new VoiceError(502, `Transcription failed (${res.status}).`);
+    throw new VoiceError(424, `Transcription failed (${res.status}).`);
   }
   const data = (await res.json()) as { text?: string; words?: { end?: number }[] };
   const lastEnd = data.words?.length ? data.words[data.words.length - 1]?.end ?? 0 : 0;
@@ -91,7 +91,7 @@ Constraints: ${[...TIME_CHIPS, ...OTHER_CHIPS].map((c) => `${c.id}=${c.label}`).
 
 export async function extract(transcript: string): Promise<Record<string, unknown>> {
   const key = process.env["ANTHROPIC_API_KEY"];
-  if (!key) throw new VoiceError(503, "Extraction service is not configured.");
+  if (!key) throw new VoiceError(424, "Extraction service is not configured.");
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: { "x-api-key": key, "anthropic-version": "2023-06-01", "content-type": "application/json" },
@@ -107,7 +107,7 @@ export async function extract(transcript: string): Promise<Record<string, unknow
   });
   if (!res.ok) {
     console.error(`Anthropic extraction failed [${res.status}]`);
-    throw new VoiceError(502, `Extraction failed (${res.status}).`);
+    throw new VoiceError(424, `Extraction failed (${res.status}).`);
   }
   const data = (await res.json()) as { content?: { type: string; input?: Record<string, unknown> }[] };
   return data.content?.find((c) => c.type === "tool_use")?.input ?? {};
