@@ -14,14 +14,15 @@ const BADGE: Record<Availability, string> = {
 };
 
 /** Reusable finder: health area → service → worker-confirmed constraints → ranked options. Worker chooses. */
-export function FacilityFinder({ onChoose, chosenId, defaultOpen = false }: { onChoose: (ref: FacilityRef, name: string, service: string) => void; chosenId?: string | undefined; defaultOpen?: boolean }) {
+export function FacilityFinder({ onChoose, chosenId, defaultOpen = false, initial }: { onChoose: (ref: FacilityRef, name: string, service: string) => void; chosenId?: string | undefined; defaultOpen?: boolean; initial?: { area?: HealthArea; serviceId?: string; constraints: ConstraintId[] } | undefined }) {
   const t = useT();
   const lang = useLang();
   const [open, setOpen] = useState(defaultOpen);
-  const [area, setArea] = useState<HealthArea | "">("");
-  const [serviceId, setServiceId] = useState("");
+  // `initial` only pre-fills worker inputs (e.g. from a reviewed voice draft); ranking is unchanged.
+  const [area, setArea] = useState<HealthArea | "">(initial?.area ?? "");
+  const [serviceId, setServiceId] = useState(initial?.serviceId ?? "");
   const [text, setText] = useState("");
-  const [picked, setPicked] = useState<ConstraintId[]>([]);
+  const [picked, setPicked] = useState<ConstraintId[]>(initial?.constraints ?? []);
   const suggested = useMemo(() => suggestConstraints(text), [text]);
   const result = area && serviceId ? findFacilities(area, serviceId, picked) : null;
 

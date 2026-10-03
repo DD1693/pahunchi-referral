@@ -18,6 +18,7 @@ import { Route as PrintRouteImport } from './routes/print'
 import { Route as ReferralRouteImport } from './routes/referral'
 import { Route as ReferralsRouteImport } from './routes/referrals'
 import { Route as SyncRouteImport } from './routes/sync'
+import { Route as ApiPublicVoiceRouteImport } from './routes/api/public/voice'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -64,6 +65,11 @@ const SyncRoute = SyncRouteImport.update({
   path: '/sync',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicVoiceRoute = ApiPublicVoiceRouteImport.update({
+  id: '/api/public/voice',
+  path: '/api/public/voice',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/referral': typeof ReferralRoute
   '/referrals': typeof ReferralsRoute
   '/sync': typeof SyncRoute
+  '/api/public/voice': typeof ApiPublicVoiceRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,6 +93,7 @@ export interface FileRoutesByTo {
   '/referral': typeof ReferralRoute
   '/referrals': typeof ReferralsRoute
   '/sync': typeof SyncRoute
+  '/api/public/voice': typeof ApiPublicVoiceRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -98,6 +106,7 @@ export interface FileRoutesById {
   '/referral': typeof ReferralRoute
   '/referrals': typeof ReferralsRoute
   '/sync': typeof SyncRoute
+  '/api/public/voice': typeof ApiPublicVoiceRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +120,7 @@ export interface FileRouteTypes {
     | '/referral'
     | '/referrals'
     | '/sync'
+    | '/api/public/voice'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +132,7 @@ export interface FileRouteTypes {
     | '/referral'
     | '/referrals'
     | '/sync'
+    | '/api/public/voice'
   id:
     | '__root__'
     | '/'
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '/referral'
     | '/referrals'
     | '/sync'
+    | '/api/public/voice'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -145,6 +157,7 @@ export interface RootRouteChildren {
   ReferralRoute: typeof ReferralRoute
   ReferralsRoute: typeof ReferralsRoute
   SyncRoute: typeof SyncRoute
+  ApiPublicVoiceRoute: typeof ApiPublicVoiceRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -212,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SyncRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/voice': {
+      id: '/api/public/voice'
+      path: '/api/public/voice'
+      fullPath: '/api/public/voice'
+      preLoaderRoute: typeof ApiPublicVoiceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -225,6 +245,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReferralRoute: ReferralRoute,
   ReferralsRoute: ReferralsRoute,
   SyncRoute: SyncRoute,
+  ApiPublicVoiceRoute: ApiPublicVoiceRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
