@@ -255,7 +255,7 @@ export async function recordSimulatedIvrKeypress(
 ): Promise<"patient_reported_arrival" | "unrecognised" | "duplicate"> {
   const at = new Date().toISOString();
   const already = (r.ivrEvents ?? []).some((e) => e.callId === callId && e.parsed === "patient_reported_arrival");
-  const result = parsed === "patient_reported_arrival" && already ? "duplicate" : parsed;
+  const result: "patient_reported_arrival" | "unrecognised" | "duplicate" = parsed === "patient_reported_arrival" && already ? "duplicate" : parsed;
   const ivrEvents = [...(r.ivrEvents ?? []), { callId, kind: "keypress" as const, key, parsed: result, at, simulated: true as const }];
   if (result !== "patient_reported_arrival") {
     await updateReferral(r, { ivrEvents }, {
