@@ -73,6 +73,8 @@ export interface Referral {
   referralCode?: string;
   /** Arrival confirmations (patient-reported and/or facility-verified). Optional for older records. */
   arrivals?: ArrivalEvent[];
+  /** SMS follow-up thread (supports many reminders/replies later). Optional for older records. */
+  smsEvents?: SmsEvent[];
   referralDate: string; // YYYY-MM-DD
   destination: string;
   department: string;
