@@ -6,7 +6,9 @@ import { addDays, todayISO } from "@/lib/followup";
 import { FollowUpSupport } from "@/components/FollowUpSupport";
 import { ReferralCodeCard } from "@/components/ReferralCode";
 import { saveReferral, uid } from "@/lib/store";
-import type { HistoryEvent, Referral } from "@/lib/types";
+import type { FacilityRef, HistoryEvent, Referral } from "@/lib/types";
+import { FacilityFinder } from "@/components/FacilityFinder";
+import { constraintLabel } from "@/lib/facilities/constraints";
 
 export const Route = createFileRoute("/new")({
   head: () => ({
@@ -43,6 +45,9 @@ function NewReferral() {
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saved, setSaved] = useState<Referral | null>(null);
+  const [facilityRef, setFacilityRef] = useState<{ ref: FacilityRef; name: string } | null>(null);
+  // Keep the finder link only while the destination still matches the worker's finder choice.
+  const activeRef = facilityRef && facilityRef.name === f.destination.trim() ? facilityRef.ref : null;
 
   const missing = {
     patientId: !f.patientId.trim(),
@@ -65,7 +70,9 @@ function NewReferral() {
         detail: review.noBarrier ? "No barrier confirmed" : `${review.confirmed.length} barrier(s) confirmed`,
       },
     ];
+    if (activeRef) history.splice(1, 0, { type: "facility_selected", at: now, detail: f.destination.trim() });
     const r: Referral = {
+      ...(activeRef ? { facilityRef: activeRef } : {}),
       id: uid(),
       patientId: f.patientId.trim().toUpperCase(),
       referralDate: f.referralDate,
@@ -149,6 +156,13 @@ function NewReferral() {
               <input id="fdate" type="date" className="field" value={f.followUpDate} onChange={set("followUpDate")} />
             </div>
           </div>
+          <FacilityFinder
+            chosenId={activeRef?.facilityId}
+            onChoose={(ref, name, service) => {
+              setFacilityRef({ ref, name });
+              setF((prev) => ({ ...prev, destination: name, department: service }));
+            }}
+          />
           <div>
             <label htmlFor="dest" className="field-label">Destination facility *</label>
             <input id="dest" className="field" list="facilities" value={f.destination} onChange={set("destination")} aria-invalid={tried && missing.destination} />
@@ -185,6 +199,13 @@ function NewReferral() {
               <ArrowLeft className="h-4 w-4" aria-hidden /> Edit
             </button>
           </div>
+          {activeRef && activeRef.constraints.length > 0 && (
+            <div className="rounded-xl bg-secondary p-3 text-sm">
+              <p className="font-semibold">Already noted before referral</p>
+              <p className="text-muted-foreground">{activeRef.constraints.map(constraintLabel).join(" · ")}</p>
+              <p className="mt-1 text-xs text-muted-foreground">Practical constraints are kept separate and are not sent to the barrier suggestions.</p>
+            </div>
+          )}
           <BarrierReview note={note} setNote={setNote} review={review} setReview={setReview} />
           {saveError && <p role="alert" className="text-destructive">{saveError}</p>}
           <div className="space-y-2">

@@ -30,7 +30,17 @@ export type HistoryType =
   | "sms_reply_simulated"
   | "ivr_call_simulated"
   | "ivr_keypress_simulated"
+  | "facility_selected"
   | ArrivalType;
+
+/** Worker's choice from the facility finder (illustrative synthetic data). Optional; destination stays a string. */
+export interface FacilityRef {
+  facilityId: string;
+  healthArea: import("./facilities/data").HealthArea;
+  serviceId: string;
+  constraints: import("./facilities/constraints").ConstraintId[];
+  matchedAt: string;
+}
 
 /** One step of a SIMULATED IVR call (no telephony). */
 export interface IvrEvent {
@@ -91,6 +101,8 @@ export interface Referral {
   smsEvents?: SmsEvent[];
   /** Simulated Voice/IVR follow-up steps. Optional for older records. */
   ivrEvents?: IvrEvent[];
+  /** Set only when the worker chose a destination via the facility finder. */
+  facilityRef?: FacilityRef;
   referralDate: string; // YYYY-MM-DD
   destination: string;
   department: string;
