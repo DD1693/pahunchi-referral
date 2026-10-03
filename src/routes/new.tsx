@@ -40,7 +40,7 @@ function NewReferral() {
 
 function NewReferralForm({ parent }: { parent?: Referral | undefined }) {
   const navigate = useNavigate();
-  const t = useT();
+  const tr = useT();
   const lang = useLang();
   const [step, setStep] = useState<1 | 2>(1);
   const t = todayISO();
@@ -138,12 +138,12 @@ function NewReferralForm({ parent }: { parent?: Referral | undefined }) {
         </p>
         <ReferralCodeCard code={saved.referralCode} />
         <Link to="/print" search={{ id: saved.id }} className="btn-secondary w-full">
-          <Printer className="h-5 w-5" aria-hidden /> {t("print_referral")}
+          <Printer className="h-5 w-5" aria-hidden /> {tr("print_referral")}
         </Link>
         {saved.confirmedBarriers.length > 0 ? (
           <FollowUpSupport r={saved} onDone={done} doneLabel="Continue without actions" />
         ) : (
-          <button type="button" className="btn-primary w-full" onClick={done}>{t("continue")}</button>
+          <button type="button" className="btn-primary w-full" onClick={done}>{tr("continue")}</button>
         )}
       </div>
     );
@@ -152,13 +152,13 @@ function NewReferralForm({ parent }: { parent?: Referral | undefined }) {
   return (
     <div className="space-y-5">
       <div>
-        <p className="eyebrow">{t("step_of", { n: step })}</p>
-        <h1 className="text-2xl font-bold">{step === 1 ? t("referral_details") : t("barrier_note")}</h1>
+        <p className="eyebrow">{tr("step_of", { n: step })}</p>
+        <h1 className="text-2xl font-bold">{step === 1 ? tr("referral_details") : tr("barrier_note")}</h1>
         {parent && (
           <div className="mt-3 rounded-xl border border-primary/30 bg-primary-soft p-3 text-sm">
-            <p className="font-semibold">{t("onward_from", { code: parent.referralCode ?? "" })} · {t("journey_id")} <span className="font-mono">{parent.journeyId}</span></p>
-            <p>{t("origin")}: {parent.destination}{parent.facilityType ? ` (${facilityTypeLabel(parent.facilityType, lang)})` : ""}</p>
-            <p className="mt-1 text-xs text-muted-foreground">{t("onward_note")}</p>
+            <p className="font-semibold">{tr("onward_from", { code: parent.referralCode ?? "" })} · {tr("journey_id")} <span className="font-mono">{parent.journeyId}</span></p>
+            <p>{tr("origin")}: {parent.destination}{parent.facilityType ? ` (${facilityTypeLabel(parent.facilityType, lang)})` : ""}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{tr("onward_note")}</p>
           </div>
         )}
         <div className="mt-3 grid grid-cols-2 gap-2" aria-hidden>
@@ -178,7 +178,7 @@ function NewReferralForm({ parent }: { parent?: Referral | undefined }) {
           }}
         >
           <div>
-            <label htmlFor="pid" className="field-label">{t("patient_id")} *</label>
+            <label htmlFor="pid" className="field-label">{tr("patient_id")} *</label>
             <input id="pid" className="field font-mono uppercase" autoComplete="off" placeholder="e.g. CG-0142" value={f.patientId} onChange={set("patientId")} aria-invalid={tried && missing.patientId} aria-describedby="pid-note" />
             <p id="pid-note" className="mt-2 flex items-start gap-2 rounded-lg bg-secondary p-3 text-sm text-secondary-foreground">
               <Lock className="mt-0.5 h-4 w-4 shrink-0" aria-hidden /> {PRIVACY_NOTE}
@@ -187,11 +187,11 @@ function NewReferralForm({ parent }: { parent?: Referral | undefined }) {
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label htmlFor="rdate" className="field-label">{t("referral_date")} *</label>
+              <label htmlFor="rdate" className="field-label">{tr("referral_date")} *</label>
               <input id="rdate" type="date" className="field" value={f.referralDate} onChange={set("referralDate")} />
             </div>
             <div>
-              <label htmlFor="fdate" className="field-label">{t("followup_due")} *</label>
+              <label htmlFor="fdate" className="field-label">{tr("followup_due")} *</label>
               <input id="fdate" type="date" className="field" value={f.followUpDate} onChange={set("followUpDate")} />
             </div>
           </div>
@@ -204,34 +204,34 @@ function NewReferralForm({ parent }: { parent?: Referral | undefined }) {
             }}
           />
           <div>
-            <label htmlFor="dest" className="field-label">{t("destination")} *</label>
+            <label htmlFor="dest" className="field-label">{tr("destination")} *</label>
             <input id="dest" className="field" value={f.destination} onChange={set("destination")} aria-invalid={tried && missing.destination} />
             {tried && missing.destination && <p className="mt-1 text-sm text-destructive">Destination is required.</p>}
           </div>
           <div>
-            <label htmlFor="ftype" className="field-label">{t("facility_type")}</label>
+            <label htmlFor="ftype" className="field-label">{tr("facility_type")}</label>
             {activeRef ? (
               <>
                 <p id="ftype" className="field flex items-center bg-secondary font-semibold" aria-readonly="true">{facilityTypeLabel(facilityType, lang)}</p>
-                <p className="mt-1 text-xs text-muted-foreground">{t("ft_locked")}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{tr("ft_locked")}</p>
               </>
             ) : (
               <select id="ftype" className="field" value={manualType} onChange={(e) => setManualType(e.target.value)}>
-                <option value="">{t("ft_choose")}</option>
+                <option value="">{tr("ft_choose")}</option>
                 {FACILITY_TYPES.map((x) => <option key={x.id} value={x.id}>{x[lang]}</option>)}
               </select>
             )}
           </div>
           <div>
-            <label htmlFor="dept" className="field-label">{t("department")}</label>
+            <label htmlFor="dept" className="field-label">{tr("department")}</label>
             <input id="dept" className="field" placeholder="e.g. Outpatient department" value={f.department} onChange={set("department")} />
           </div>
           <div>
-            <label htmlFor="ctx" className="field-label">{t("context")} <span className="font-normal text-muted-foreground">(optional)</span></label>
+            <label htmlFor="ctx" className="field-label">{tr("context")} <span className="font-normal text-muted-foreground">(optional)</span></label>
             <textarea id="ctx" rows={2} className="field py-3" placeholder="Logistics only — no clinical details" value={f.context} onChange={set("context")} />
           </div>
           <button type="submit" className="btn-primary w-full">
-            {t("continue")} <ArrowRight className="h-5 w-5" aria-hidden />
+            {tr("continue")} <ArrowRight className="h-5 w-5" aria-hidden />
           </button>
         </form>
       ) : (
@@ -242,7 +242,7 @@ function NewReferralForm({ parent }: { parent?: Referral | undefined }) {
               <span className="text-muted-foreground"> → {f.destination}{facilityType ? ` · ${facilityTypeLabel(facilityType, lang)}` : ""}</span>
             </span>
             <button type="button" className="btn-ghost min-h-10 px-3 text-sm" onClick={() => setStep(1)}>
-              <ArrowLeft className="h-4 w-4" aria-hidden /> {t("edit")}
+              <ArrowLeft className="h-4 w-4" aria-hidden /> {tr("edit")}
             </button>
           </div>
           {activeRef && activeRef.constraints.length > 0 && (
@@ -256,7 +256,7 @@ function NewReferralForm({ parent }: { parent?: Referral | undefined }) {
           {saveError && <p role="alert" className="text-destructive">{saveError}</p>}
           <div className="space-y-2">
             <button type="button" className="btn-primary w-full" disabled={!reviewComplete(review) || saving} onClick={save}>
-              <Save className="h-5 w-5" aria-hidden /> {t("confirm_save")}
+              <Save className="h-5 w-5" aria-hidden /> {tr("confirm_save")}
             </button>
             {!reviewComplete(review) && (
               <p className="text-center text-sm text-muted-foreground">
