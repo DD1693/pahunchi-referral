@@ -209,6 +209,7 @@ export function BarrierReview({
               {BARRIERS.map((b) => {
                 const st = statusOf(b.label);
                 const on = review.confirmed.includes(b.label);
+                const ex = explanation?.[b.label];
                 return (
                   <li key={b.label}>
                     <button
@@ -244,19 +245,19 @@ export function BarrierReview({
                         )}
                       </span>
                     </button>
-                    {(st === "detected" || st === "possible") && explanation?.[b.label] && (
+                    {(st === "detected" || st === "possible") && ex && (
                       <div className="mt-1.5 px-3 text-sm">
-                        {explanation[b.label].evidence.length > 0 && (
+                        {ex.evidence.length > 0 && (
                           <div className="flex flex-wrap items-center gap-1.5">
                             <span className="text-muted-foreground">Words from the note:</span>
-                            {explanation[b.label].evidence.map((e) => (
+                            {ex.evidence.map((e) => (
                               <span key={e.word} lang="hi" className="hindi rounded-md bg-secondary px-2 py-0.5 text-secondary-foreground">
                                 {e.word}
                               </span>
                             ))}
                           </div>
                         )}
-                        {explanation[b.label].weak && (
+                        {ex.weak && (
                           <p className="mt-1 text-attention-foreground">Evidence is weak — check with the patient before confirming.</p>
                         )}
                       </div>
