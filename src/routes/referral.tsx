@@ -4,6 +4,7 @@ import { useState } from "react";
 import { BarrierReview, emptyReview, reviewComplete, type ReviewState } from "@/components/BarrierReview";
 import { FollowUpSupport } from "@/components/FollowUpSupport";
 import { StatusPill } from "@/components/ReferralCard";
+import { ArrivalStatus, ReferralCodeCard } from "@/components/ReferralCode";
 import { addDays, formatDate, formatStamp, timingLabel, todayISO } from "@/lib/followup";
 import { updateReferral, useReferrals } from "@/lib/store";
 import { barrierMeta, type HistoryType, type Referral } from "@/lib/types";
@@ -30,6 +31,8 @@ const EVENT_LABEL: Record<HistoryType, string> = {
   completed: "Referral completed",
   synced: "Marked as synced (demo)",
   action_planned: "Follow-up action planned",
+  facility_verified_arrival: "Facility-verified arrival",
+  patient_reported_arrival: "Patient-reported arrival",
 };
 
 function Detail() {
@@ -76,6 +79,8 @@ function DetailView({ r }: { r: Referral }) {
           {r.isDemo && <span className="chip-demo">Demo</span>}
           <StatusPill r={r} />
         </div>
+        <div className="mt-3"><ReferralCodeCard code={r.referralCode} /></div>
+        <div className="mt-3"><ArrivalStatus r={r} /></div>
         <dl className="mt-3 divide-y divide-border text-sm">
           <Row k="Referral date" v={formatDate(r.referralDate)} />
           <Row k="Destination" v={r.destination} />
