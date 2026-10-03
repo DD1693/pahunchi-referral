@@ -31,6 +31,14 @@ function pahunchiServiceWorker(): Plugin {
           globDirectory: outDir,
           globPatterns: ["**/*.{js,css,ico,png,svg,webmanifest,woff2}"],
           globIgnores: ["sw.js", "workbox-*.js"],
+          // public/ files may be copied after this hook runs, so list them explicitly.
+          additionalManifestEntries: [
+            "/manifest.webmanifest",
+            "/favicon.ico",
+            "/icon-192.png",
+            "/icon-512.png",
+            "/apple-touch-icon.png",
+          ].map((url) => ({ url, revision: String(Date.now()) })),
           swDest: resolve(outDir, "sw.js"),
           maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
           clientsClaim: true,
