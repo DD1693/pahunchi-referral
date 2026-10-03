@@ -7,7 +7,7 @@ import type { Referral } from "@/lib/types";
 
 const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "*", "0", "#"];
 
-export function IvrFollowUp({ r }: { r: Referral }) {
+export function IvrFollowUp({ r, arrivalKnown }: { r: Referral; arrivalKnown: boolean }) {
   const [callId, setCallId] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<{ ok: boolean; text: string } | null>(null);
   const events = r.ivrEvents ?? [];
@@ -24,7 +24,7 @@ export function IvrFollowUp({ r }: { r: Referral }) {
       result === "patient_reported_arrival"
         ? { ok: true, text: "Key 1 received — patient-reported arrival recorded (via IVR)." }
         : result === "duplicate"
-          ? { ok: true, text: "Already recorded for this call — no duplicate added." }
+          ? { ok: true, text: "Arrival already reported — no new arrival added." }
           : { ok: false, text: `Key ${key} not recognised. This prototype supports 1 = reached referral facility.` },
     );
   }
@@ -43,10 +43,14 @@ export function IvrFollowUp({ r }: { r: Referral }) {
       <p className="text-xs text-muted-foreground">
         The patient does not need the Pahunchi app. In deployment, SMS or IVR can work with basic phones using the mobile network. Pahunchi's health-worker workflow remains offline-first.
       </p>
+      {arrivalKnown ? (
+        <p className="text-sm text-muted-foreground">IVR arrival call not offered — arrival evidence already recorded (see above).</p>
+      ) : (
       <button type="button" className="btn-secondary w-full text-sm" onClick={startCall}>
         <Phone className="h-4 w-4" aria-hidden /> Simulate IVR call
       </button>
-      {callId && (
+      )}
+      {callId && !arrivalKnown && (
         <div className="space-y-2 rounded-xl border border-border p-3">
           <p role="status" className="text-sm font-semibold text-success">IVR call simulation started</p>
           <p className="text-xs text-muted-foreground">Simulated patient keypad. Supported: 1 = I reached the referred facility</p>

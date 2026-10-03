@@ -226,6 +226,11 @@ export async function recordSimulatedReply(r: Referral, body: string, parsed: "p
     await updateReferral(r, { smsEvents }, { type: "sms_reply_simulated", at, detail: "Not recognised — no status change" });
     return;
   }
+  // Idempotent: at most one patient_reported_arrival; the first report stays authoritative.
+  if (r.arrivals?.some((a) => a.type === "patient_reported_arrival")) {
+    await updateReferral(r, { smsEvents }, { type: "sms_reply_simulated", at, detail: "Arrival already reported — no new arrival added" });
+    return;
+  }
   const withReply = { ...r, smsEvents, history: [...r.history, { type: "sms_reply_simulated" as const, at, detail: `Reply "${body.trim()}"` }] };
   await updateReferral(
     withReply,
@@ -254,13 +259,14 @@ export async function recordSimulatedIvrKeypress(
   parsed: "patient_reported_arrival" | "unrecognised",
 ): Promise<"patient_reported_arrival" | "unrecognised" | "duplicate"> {
   const at = new Date().toISOString();
-  const already = (r.ivrEvents ?? []).some((e) => e.callId === callId && e.parsed === "patient_reported_arrival");
+  // Idempotent across calls and channels: at most one patient_reported_arrival per referral.
+  const already = (r.arrivals ?? []).some((a) => a.type === "patient_reported_arrival");
   const result: "patient_reported_arrival" | "unrecognised" | "duplicate" = parsed === "patient_reported_arrival" && already ? "duplicate" : parsed;
   const ivrEvents = [...(r.ivrEvents ?? []), { callId, kind: "keypress" as const, key, parsed: result, at, simulated: true as const }];
   if (result !== "patient_reported_arrival") {
     await updateReferral(r, { ivrEvents }, {
       type: "ivr_keypress_simulated", at,
-      detail: result === "duplicate" ? `Key ${key} — already recorded for this call` : `Key ${key} — not recognised, no status change`,
+      detail: result === "duplicate" ? `Key ${key} — arrival already reported, no new arrival added` : `Key ${key} — not recognised, no status change`,
     });
     return result;
   }
