@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, CalendarClock, CheckCircle2, CloudUpload, History, PhoneOutgoing, RotateCcw, Smartphone, UserCheck, XCircle } from "lucide-react";
+import { ArrowLeft, CalendarClock, ClipboardList, CheckCircle2, CloudUpload, History, PhoneOutgoing, RotateCcw, Smartphone, UserCheck, XCircle } from "lucide-react";
 import { useState } from "react";
 import { BarrierReview, emptyReview, reviewComplete, type ReviewState } from "@/components/BarrierReview";
+import { FollowUpSupport } from "@/components/FollowUpSupport";
 import { StatusPill } from "@/components/ReferralCard";
 import { addDays, formatDate, formatStamp, timingLabel, todayISO } from "@/lib/followup";
 import { updateReferral, useReferrals } from "@/lib/store";
@@ -28,6 +29,7 @@ const EVENT_LABEL: Record<HistoryType, string> = {
   not_completed: "Referral not yet completed",
   completed: "Referral completed",
   synced: "Marked as synced (demo)",
+  action_planned: "Follow-up action planned",
 };
 
 function Detail() {
@@ -56,7 +58,7 @@ function Row({ k, v }: { k: string; v: string }) {
 }
 
 function DetailView({ r }: { r: Referral }) {
-  const [mode, setMode] = useState<"none" | "reschedule" | "notyet">("none");
+  const [mode, setMode] = useState<"none" | "reschedule" | "notyet" | "support">("none");
   const [newDate, setNewDate] = useState(addDays(todayISO(), 7));
   const [note, setNote] = useState("");
   const [review, setReview] = useState<ReviewState>(emptyReview(r.confirmedBarriers));
@@ -83,16 +85,8 @@ function DetailView({ r }: { r: Referral }) {
           {r.context && <Row k="Context" v={r.context} />}
         </dl>
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-border pt-3">
-          {r.syncState === "pending" ? (
-            <>
-              <span className="chip-pending"><CloudUpload className="h-3.5 w-3.5" aria-hidden /> Waiting to sync</span>
-              <button type="button" className="btn-ghost min-h-10 px-3 text-sm" onClick={() => updateReferral(r, {}, { type: "synced", at: now() })}>
-                Mark as synced (demo)
-              </button>
-            </>
-          ) : (
-            <span className="text-sm text-muted-foreground">Sync state: synced (demo — no data is transmitted)</span>
-          )}
+          <span className="chip-demo"><CloudUpload className="h-3.5 w-3.5" aria-hidden /> Stored offline</span>
+          <span className="text-sm text-muted-foreground">Stored locally on this device.</span>
         </div>
       </section>
 
@@ -134,6 +128,21 @@ function DetailView({ r }: { r: Referral }) {
         )}
       </section>
 
+      {(r.plannedActions?.length ?? 0) > 0 && (
+        <section className="surface p-4">
+          <h2 className="text-lg font-bold">Planned follow-up actions</h2>
+          <p className="text-xs text-muted-foreground">Chosen by the health worker from fixed prompts.</p>
+          <ul className="mt-3 space-y-2">
+            {r.plannedActions!.map((a, i) => (
+              <li key={i} className="rounded-xl bg-secondary p-3 text-sm">
+                <span className="font-medium">{a.action}</span>
+                <span className="block text-xs text-muted-foreground">{barrierMeta(a.barrier).en} · {formatStamp(a.at)}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       {r.outcome !== "completed" && (
         <section className="surface space-y-3 p-4">
           <h2 className="text-lg font-bold">Update follow-up</h2>
@@ -151,6 +160,12 @@ function DetailView({ r }: { r: Referral }) {
               <CalendarClock className="h-5 w-5 text-primary" aria-hidden /> Reschedule follow-up
             </button>
           </div>
+          {r.confirmedBarriers.length > 0 && (
+            <button type="button" className="btn-secondary w-full text-sm" aria-expanded={mode === "support"} onClick={() => setMode(mode === "support" ? "none" : "support")}>
+              <ClipboardList className="h-5 w-5 text-primary" aria-hidden /> Follow-up support
+            </button>
+          )}
+          {mode === "support" && <FollowUpSupport r={r} onDone={() => setMode("none")} doneLabel="Close" />}
 
           {mode === "reschedule" && (
             <div className="flex items-end gap-2 rounded-xl bg-secondary p-3">
