@@ -48,6 +48,7 @@ export function FacilityFinder({ onChoose, chosenId, defaultOpen = false }: { on
       </button>
       {open && (
         <div className="mt-3 space-y-4">
+          <span className="chip-demo">Illustrative data</span>
           <p className="rounded-lg bg-secondary p-2 text-xs text-secondary-foreground">
             Pahunchi suggests. The health worker chooses. You select the service needed — Pahunchi does not diagnose or decide treatment. Options are sorted with fixed rules, not AI. Facility type is shown for context only and does not decide the order. <strong>{DATA_LABEL}</strong> — not live availability.
           </p>

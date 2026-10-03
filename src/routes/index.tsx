@@ -46,6 +46,7 @@ function Home() {
         <RouteLine className="pointer-events-none absolute inset-x-0 top-2 h-14 w-full opacity-80" />
         <div className="relative pt-12">
           <h1 className="text-3xl font-bold tracking-tight">Pahunchi</h1>
+          <span className="chip-demo mt-1" title="Works locally without internet after the app has loaded once">Offline core</span>
           <p className="mt-1 text-lg text-muted-foreground">{t("tagline")}</p>
           <Link to="/new" className="btn-primary mt-5 w-full sm:w-auto">
             <Plus className="h-5 w-5" aria-hidden /> {t("new_referral")}
@@ -100,8 +101,8 @@ function Home() {
       </section>
 
       <section aria-label={t("more_tools")} className="grid grid-cols-2 gap-3">
-        <Link to="/basic-phone" className="surface flex items-center gap-2 p-3 text-sm font-semibold"><Smartphone className="h-5 w-5 text-primary" aria-hidden /> {t("basic_phone")}</Link>
-        <Link to="/sync" className="surface flex items-center gap-2 p-3 text-sm font-semibold"><RefreshCw className="h-5 w-5 text-primary" aria-hidden /> {t("sim_sync")}</Link>
+        <Link to="/basic-phone" className="surface flex flex-wrap items-center gap-2 p-3 text-sm font-semibold"><Smartphone className="h-5 w-5 text-primary" aria-hidden /> {t("basic_phone")} <span className="chip-demo">Simulation</span></Link>
+        <Link to="/sync" className="surface flex flex-wrap items-center gap-2 p-3 text-sm font-semibold"><RefreshCw className="h-5 w-5 text-primary" aria-hidden /> {t("sim_sync")} <span className="chip-demo">Simulation</span></Link>
       </section>
 
       <section aria-labelledby="queue-h" className="space-y-3">
