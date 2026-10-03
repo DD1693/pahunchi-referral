@@ -53,7 +53,7 @@ export function SmsFollowUp({ r }: { r: Referral }) {
 
       {arrivalKnown ? (
         <div role="status" className="rounded-xl border border-border p-3 text-sm">
-          <p className="font-semibold">{facilityVerified ? "Arrival verified by referral facility" : "Arrival already reported by patient"}</p>
+          <p className="font-semibold">{facilityVerified ? "Arrival verified by referral facility" : patientReported ? "Arrival already reported by patient" : "Arrival confirmed by the health worker"}</p>
           {patientReported && <p className="text-muted-foreground">Reported via {patientReported.source === "ivr" ? "IVR" : "SMS"}</p>}
           <p className="mt-1 text-xs text-muted-foreground">Arrival-confirmation reminders (SMS and IVR) are no longer offered. Other care follow-up may still be needed.</p>
         </div>
