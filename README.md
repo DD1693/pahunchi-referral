@@ -34,12 +34,13 @@ A frontline health worker can:
 
 1. Create a referral record on the device.
 2. Enter a short follow-up note in Hindi, Roman Hindi or limited Hinglish.
-3. Run a small text classifier entirely on the device.
-4. Review suggested non-clinical barriers.
-5. Confirm, reject or correct the AI suggestion.
-6. Choose from fixed, non-clinical follow-up prompts.
-7. Save the referral and follow-up activity locally.
-8. Continue the core workflow without an internet connection after the app has been loaded.
+3. Optionally play a fixed, pre-generated Hindi voice prompt to support the conversation; the audio is bundled with the app, works offline, and no patient speech is recorded or uploaded.
+4. Run a small text classifier entirely on the device.
+5. Review suggested non-clinical barriers.
+6. Confirm, reject or correct the AI suggestion.
+7. Choose from fixed, non-clinical follow-up prompts.
+8. Save the referral and follow-up activity locally.
+9. Continue the core workflow without an internet connection after the app has been loaded.
 
 The AI never makes the final decision.
 
@@ -147,6 +148,7 @@ Offline-capable PWA
 ```
 
 There is no cloud AI dependency in the core classification workflow.
+Six fixed Hindi voice prompts are also bundled with the application and explicitly cached by the service worker. They can be played by the health worker without connectivity. The prompts are pre-generated audio assets rather than runtime AI generation; Pahunchi does not record, transcribe or upload patient speech.
 
 The published prototype was manually tested with connectivity disabled: the application remained accessible after initial loading, the bundled classifier ran, and newly saved referral data remained available locally.
 
@@ -280,6 +282,7 @@ For patients using basic phones, a future architecture could connect a conventio
 - TypeScript
 - Vite
 - Progressive Web App / service worker
+- Pre-generated Hindi voice prompts bundled and cached for offline playback
 - Local browser storage
 - Dependency-free JavaScript model inference
 - Small logistic-regression text classifier
