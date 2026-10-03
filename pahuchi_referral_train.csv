@@ -1,0 +1,161 @@
+id,text_hi,text_en,access_cost,household_constraint,fear_hesitancy,work_caregiving,understanding_information,split,difficulty,language_style,rationale
+TR001,"अस्पताल यहां से बहुत दूर है, सीधी बस नहीं चलती।",The hospital is very far from here; there is no direct bus.,1,0,0,0,0,train,easy,hindi_devanagari,Distance plus no direct transport.
+TR002,आने-जाने का किराया जुटाना मुश्किल है।,It is hard to arrange the fare for the journey there and back.,1,0,0,0,0,train,easy,hindi_devanagari,Cannot afford travel fare.
+TR003,"गांव से जिला अस्पताल करीब 60 किमी, ऑटो वाले बहुत पैसा मांगते हैं",From the village the district hospital is about 60 km; auto drivers ask for a lot of money.,1,0,0,0,0,train,easy,hindi_devanagari,Long distance and high travel cost.
+TR004,"बरसात में नदी की पुलिया डूब जाती है, अभी निकलना मुश्किल।",In the rains the culvert over the river gets submerged; hard to get out right now.,1,0,0,0,0,train,medium,hindi_devanagari,Route physically inaccessible; transport access barrier without any cost words.
+TR005,"पिछले महीने का कर्ज अभी चुका नहीं पाए, जांच के लिए पैसे नहीं बचे।",They have not yet repaid last month's loan; no money is left for the tests.,1,0,0,0,0,train,medium,hindi_devanagari,Cannot afford cost of tests (out-of-pocket care cost).
+TR006,"शहर के लिए सुबह एक ही जीप जाती है, वो छूट गई तो पूरा दिन खराब",Only one jeep goes to town in the morning; if she misses it the whole day is wasted.,1,0,0,0,0,train,medium,hindi_devanagari,"Limited transport availability. No mention of her paid work, so not work_caregiving."
+TR007,उसके पास गाड़ी का कोई साधन नहीं है।,She has no means of transport.,1,0,0,0,0,train,easy,hindi_devanagari,No transport available.
+TR008,"दवाई और जांच का खर्च सुनकर चुप हो गई, बोली इतना पैसा कहां से लाएं",She went quiet on hearing the cost of medicines and tests; said where would we get so much money.,1,0,0,0,0,train,medium,hindi_devanagari,Cannot afford care costs.
+TR009,"रास्ता कच्चा है, ट्रैक्टर के अलावा कुछ नहीं जाता।",The road is unpaved; nothing but tractors goes on it.,1,0,0,0,0,train,medium,hindi_devanagari,Poor road means no usable transport.
+TR010,"बड़े अस्पताल तक दो बार बस बदलनी पड़ती है, खर्चा भी ज्यादा","She has to change buses twice to reach the big hospital, and the cost is also high.",1,0,0,0,0,train,easy,hindi_devanagari,Difficult journey and high travel cost.
+TR011,पैसे की तंगी है।,Money is tight.,1,0,0,0,0,train,medium,hindi_devanagari,General financial hardship stated; included in access_cost by definition.
+TR012,"उधार लेकर ही जा पाएगी, अभी किसी से मिला नहीं",She can only go by borrowing money; she has not got it from anyone yet.,1,0,0,0,0,train,medium,hindi_devanagari,Lacks money to go.
+TR013,रायपुर वाला अस्पताल बहुत दूर पड़ता है,The Raipur hospital is very far away.,1,0,0,0,0,train,easy,hindi_devanagari,Distance barrier.
+TR014,"ज़मीन गिरवी है, घर में नकद बिल्कुल नहीं",The land is mortgaged; there is no cash at home at all.,1,0,0,0,0,train,medium,hindi_devanagari,Severe lack of money.
+TR015,"एम्बुलेंस के बारे में पूछा तो बोली वो सिर्फ इमरजेंसी में आती है, और कोई साधन नहीं","Asked about an ambulance, she said it only comes in emergencies, and there is no other transport.",1,0,0,0,0,train,hard,hindi_devanagari,No transport available. Her statement about ambulance use is not treated as a misunderstanding.
+TR016,"ब्लॉक तक तो चली जाएगी, आगे जिला अस्पताल का किराया नहीं है।","She can manage to get to the block, but she does not have the fare onward to the district hospital.",1,0,0,0,0,train,medium,hindi_devanagari,Cannot afford onward travel fare.
+TR017,"hospital bahut door hai, aane jaane ka kharcha nahi hai",The hospital is very far; there is no money for travel.,1,0,0,0,0,train,easy,roman_hindi,Distance plus cannot afford travel.
+TR018,gaon se shaher ke liye koi sadhan nahi milta,No transport is available from the village to town.,1,0,0,0,0,train,easy,roman_hindi,No transport.
+TR019,paise ka intazaam nahi ho pa raha,Unable to arrange the money.,1,0,0,0,0,train,medium,roman_hindi,Lack of money.
+TR020,2 ghante paidal chalke road tak aana padta hai,She has to walk 2 hours to reach the road.,1,0,0,0,0,train,medium,roman_hindi,Physical access barrier.
+TR021,"transport ka problem hai, is route pe bus service band hai",There is a transport problem; the bus service on this route is stopped.,1,0,0,0,0,train,easy,hinglish,Transport unavailable.
+TR022,"fare afford nahi kar sakti, family already loan pe hai",She cannot afford the fare; the family is already in debt.,1,0,0,0,0,train,medium,hinglish,Cannot afford travel fare.
+TR023,पति ने कहा अभी अस्पताल जाने की ज़रूरत नहीं।,Her husband said there is no need to go to the hospital now.,0,1,0,0,0,train,easy,hindi_devanagari,"Husband's decision blocks attendance. The view is his, not her own misunderstanding."
+TR024,सास की मर्ज़ी के बिना घर से बाहर नहीं जाती।,She does not leave the house without her mother-in-law's consent.,0,1,0,0,0,train,easy,hindi_devanagari,Needs family permission.
+TR025,"साथ ले जाने वाला कोई नहीं है, अकेले कभी शहर नहीं गई।",There is no one to take her; she has never gone to town alone.,0,1,0,0,0,train,medium,hindi_devanagari,No family member available to accompany her.
+TR026,घरवाले कहते हैं पहले शादी का काम निपटा लो फिर देखेंगे,The family says finish the wedding work first and then they will see.,0,1,0,0,0,train,medium,hindi_devanagari,Family decision to postpone.
+TR027,"बेटा बाहर कमाने गया है, वही ले जाता है, उसके लौटने तक रुकेगी","Her son has gone away to earn; he is the one who takes her, so she will wait until he returns.",0,1,0,0,0,train,medium,hindi_devanagari,"Depends on a family member to accompany her. The work mentioned is the son's, not hers."
+TR028,ससुर जी नहीं मानते कि औरत की जांच बड़े अस्पताल में हो,Her father-in-law does not agree to a woman being examined at a big hospital.,0,1,0,0,0,train,medium,hindi_devanagari,Family member refuses permission.
+TR029,"घर में बात करके बताएगी, अभी कुछ तय नहीं।",She will tell after discussing at home; nothing is decided yet.,0,1,0,0,0,train,hard,hindi_devanagari,Decision depends on the household. Borderline; a weaker signal than an explicit refusal.
+TR030,"पति गुस्सैल हैं, उनसे पूछने की हिम्मत नहीं होती",Her husband is short-tempered; she does not dare ask him.,0,1,0,0,0,train,hard,hindi_devanagari,"Cannot seek husband's permission. Her fear is of asking him, not of care, so fear_hesitancy is 0."
+TR031,जेठानी बोली ये सब बेकार के खर्चे हैं,Her elder sister-in-law said these are all useless expenses.,0,1,0,0,0,train,hard,hindi_devanagari,"Family opposition. Mentions expenses but not inability to pay, so access_cost is 0."
+TR032,घर के मर्द खेत से लौटें तब तय होगा कौन साथ जाएगा,"When the men of the house return from the fields, it will be decided who goes with her.",0,1,0,0,0,train,medium,hindi_devanagari,"Accompaniment depends on family. The field work is the men's, not hers."
+TR033,"देवर की शादी है, घरवालों ने अभी कहीं जाने से मना कर दिया",It is her brother-in-law's wedding; the family has refused any outings for now.,0,1,0,0,0,train,medium,hindi_devanagari,Family refusal.
+TR034,"पति कहते हैं डॉक्टर बेकार डराते हैं, जाने की ज़रूरत नहीं",Her husband says doctors scare people needlessly and there is no need to go.,0,1,0,0,0,train,hard,hindi_devanagari,Husband blocks attendance. The word about scaring is the husband's opinion; she expresses no fear.
+TR035,मायके वाले और ससुराल वाले दोनों की राय अलग है,Her parents' family and her in-laws have different opinions.,0,1,0,0,0,train,hard,hindi_devanagari,Family disagreement holds the decision. Context-dependent; review.
+TR036,ननद साथ चलने को तैयार नहीं,Her sister-in-law is not willing to go with her.,0,1,0,0,0,train,easy,hindi_devanagari,No family member willing to accompany.
+TR037,pati ne abhi mana kar diya hai,Her husband has refused for now.,0,1,0,0,0,train,easy,roman_hindi,Husband refuses.
+TR038,ghar wale permission nahi de rahe,The family is not giving permission.,0,1,0,0,0,train,easy,roman_hindi,No family permission.
+TR039,koi saath jaane wala nahi hai,There is no one to go with her.,0,1,0,0,0,train,easy,roman_hindi,No accompaniment.
+TR040,pati se poochh ke batayegi,She will tell after asking her husband.,0,1,0,0,0,train,medium,roman_hindi,Decision depends on husband.
+TR041,"husband support nahi kar rahe, unko lagta hai waste of time",Her husband is not supportive; he thinks it is a waste of time.,0,1,0,0,0,train,medium,hinglish,Husband not supportive.
+TR042,family ki permission pending hai,The family's permission is pending.,0,1,0,0,0,train,easy,hinglish,Awaiting family permission.
+TR043,बड़े अस्पताल के नाम से ही घबरा गई।,She got anxious at the very mention of the big hospital.,0,0,1,0,0,train,easy,hindi_devanagari,Anxiety about going to care.
+TR044,उसे डर है कि वहां कोई बड़ी बीमारी न निकल आए।,She is afraid that some serious illness may be found there.,0,0,1,0,0,train,easy,hindi_devanagari,Fear of what will be found.
+TR045,"पिछली बार जांच में दर्द हुआ था, दोबारा नहीं कराना चाहती",The examination hurt last time; she does not want it again.,0,0,1,0,0,train,medium,hindi_devanagari,Fear of a painful procedure.
+TR046,गांव में किसी को पता चल गया तो लोग बातें बनाएंगे,"If anyone in the village finds out, people will gossip.",0,0,1,0,0,train,medium,hindi_devanagari,Stigma concern.
+TR047,मशीन और औज़ारों से डरती है,She is scared of the machines and instruments.,0,0,1,0,0,train,easy,hindi_devanagari,Fear of procedure.
+TR048,पुरुष डॉक्टर से जांच कराने में शर्म आती है,She feels embarrassed to be examined by a male doctor.,0,0,1,0,0,train,medium,hindi_devanagari,Embarrassment about examination.
+TR049,"बोली ऑपरेशन नहीं कराऊंगी, चाहे कुछ हो","She said she will not have an operation, whatever happens.",0,0,1,0,0,train,medium,hindi_devanagari,Strong reluctance toward a procedure.
+TR050,"पड़ोस की एक महिला वहां गई थी और ठीक नहीं हुई, इसलिए भरोसा नहीं","A woman from the neighbourhood went there and did not get better, so she does not trust it.",0,0,1,0,0,train,hard,hindi_devanagari,Distrust of the facility.
+TR051,अभी हिम्मत नहीं जुटा पाई है।,She has not been able to gather the courage yet.,0,0,1,0,0,train,hard,hindi_devanagari,Hesitancy expressed indirectly.
+TR052,"रिपोर्ट देखकर बहुत रोने लगी, बोली अभी नहीं जाऊंगी",She started crying a lot after seeing the report and said she will not go now.,0,0,1,0,0,train,medium,hindi_devanagari,Emotional distress leading to reluctance.
+TR053,सुई और खून निकालने से बहुत डर लगता है,She is very scared of needles and having blood drawn.,0,0,1,0,0,train,easy,hindi_devanagari,Fear of procedure.
+TR054,सोचती है वहां भर्ती कर लेंगे और घर नहीं आने देंगे,She thinks they will admit her there and not let her come home.,0,0,1,0,0,train,hard,hindi_devanagari,Fear of being admitted. Could also be read as a misunderstanding; review.
+TR055,"झाड़-फूंक करवा रही है, कहती है उसी से ठीक होगा",She is getting faith healing done and says that will make her well.,0,0,1,0,0,train,hard,hindi_devanagari,Preference for traditional healing over the referral; classified as hesitancy. Review.
+TR056,"बेटी की शादी होनी है, बीमारी की बात फैल गई तो रिश्ता टूट सकता है",Her daughter is to be married; if word of an illness spreads the match could break.,0,0,1,0,0,train,hard,hindi_devanagari,"Stigma concern. The wedding is the reason for the stigma, not a household restriction."
+TR057,usko bahut darr lag raha hai,She is very scared.,0,0,1,0,0,train,easy,roman_hindi,Fear expressed.
+TR058,sharam aati hai bolti hai,She says she feels embarrassed.,0,0,1,0,0,train,easy,roman_hindi,Embarrassment.
+TR059,"abhi jaana nahi chahti, ghabrahat hai",She does not want to go now; she is anxious.,0,0,1,0,0,train,easy,roman_hindi,Anxiety and reluctance.
+TR060,log kya kahenge yahi soch rahi hai,She keeps thinking about what people will say.,0,0,1,0,0,train,medium,roman_hindi,Stigma concern.
+TR061,"procedure se dari hui hai, bol rahi pain hoga",She is afraid of the procedure and says it will hurt.,0,0,1,0,0,train,easy,hinglish,Fear of procedure.
+TR062,hospital pe trust nahi hai uska,She does not trust the hospital.,0,0,1,0,0,train,medium,hinglish,Distrust of facility.
+TR063,"रोज़ की दिहाड़ी पर काम करती है, एक दिन भी छुट्टी नहीं ले सकती",She works on daily wages and cannot take even one day off.,0,0,0,1,0,train,easy,hindi_devanagari,Cannot leave paid work.
+TR064,"धान कटाई चल रही है, खेत छोड़कर नहीं जा सकती",The paddy harvest is on; she cannot leave the fields.,0,0,0,1,0,train,easy,hindi_devanagari,Agricultural work commitment.
+TR065,"छोटा बच्चा अभी दूध पीता है, उसे किसके पास छोड़े",The small child is still breastfeeding; who would she leave him with.,0,0,0,1,0,train,medium,hindi_devanagari,Childcare responsibility.
+TR066,"सास बिस्तर पर हैं, उनकी देखभाल वही करती है",Her mother-in-law is bedridden and she is the one who looks after her.,0,0,0,1,0,train,medium,hindi_devanagari,Caregiving duty. Mentions mother-in-law but no permission issue.
+TR067,"ईंट भट्ठे पर काम है, ठेकेदार छुट्टी नहीं देता",She works at a brick kiln; the contractor does not give leave.,0,0,0,1,0,train,easy,hindi_devanagari,Cannot get leave from work.
+TR068,"मनरेगा का काम मिला है, नागा हुआ तो पैसे कटेंगे",She has MGNREGA work; if she misses a day her pay will be cut.,0,0,0,1,0,train,medium,hindi_devanagari,"Lost wages from missing work. Lost wages are coded as work, not access_cost."
+TR069,"घर में गाय-बकरी हैं, उनका चारा पानी कौन करेगा",There are cows and goats at home; who will feed and water them.,0,0,0,1,0,train,medium,hindi_devanagari,Livestock duties.
+TR070,"तीन बच्चे स्कूल जाते हैं, सुबह-शाम सब उसी के ज़िम्मे",Three children go to school; everything morning and evening is her responsibility.,0,0,0,1,0,train,medium,hindi_devanagari,Childcare and household duties.
+TR071,"तेंदूपत्ता तोड़ाई का सीज़न है, पूरा परिवार जंगल में",It is tendu-leaf picking season; the whole family is in the forest.,0,0,0,1,0,train,hard,hindi_devanagari,Seasonal livelihood work. The family mention is not a permission issue.
+TR072,"दुकान अकेले संभालती है, बंद की तो नुकसान",She runs the shop alone; closing it means a loss.,0,0,0,1,0,train,medium,hindi_devanagari,"Cannot leave own business. Loss is about work, not travel cost."
+TR073,काम से लौटते-लौटते अस्पताल का समय खत्म हो जाता है,"By the time she gets back from work, the hospital's hours are over.",0,0,0,1,0,train,medium,hindi_devanagari,Work schedule conflicts with facility hours.
+TR074,बीमार ससुर की सेवा में लगी है,She is busy caring for her sick father-in-law.,0,0,0,1,0,train,easy,hindi_devanagari,Caregiving duty.
+TR075,"पोते-पोतियों को संभालना पड़ता है, बहू काम पर जाती है",She has to look after the grandchildren because her daughter-in-law goes to work.,0,0,0,1,0,train,hard,hindi_devanagari,Caregiving. The paid work mentioned belongs to the daughter-in-law.
+TR076,"हफ्ते में सिर्फ रविवार खाली, उस दिन अस्पताल में डॉक्टर नहीं","Only Sunday is free in the week, and there is no doctor at the hospital that day.",0,0,0,1,0,train,hard,hindi_devanagari,Work schedule leaves no usable day.
+TR077,kaam pe chhutti nahi milti,She does not get leave from work.,0,0,0,1,0,train,easy,roman_hindi,Cannot get leave.
+TR078,"bachche chhote hain, unko chhod ke nahi ja sakti",The children are small; she cannot leave them.,0,0,0,1,0,train,easy,roman_hindi,Childcare.
+TR079,abhi khet ka kaam zyada hai,There is a lot of farm work right now.,0,0,0,1,0,train,easy,roman_hindi,Agricultural work.
+TR080,majdoori chhodegi to us din khana nahi banega,If she skips wage work there will be no food that day.,0,0,0,1,0,train,medium,roman_hindi,Loss of daily wage. Coded as work; poverty implied but no travel or care cost stated.
+TR081,"private factory hai, job se leave nahi milegi",It is a private factory; she will not get leave from the job.,0,0,0,1,0,train,easy,hinglish,Cannot get leave.
+TR082,ghar pe elderly mother-in-law ki full time care karti hai,She cares for her elderly mother-in-law full time at home.,0,0,0,1,0,train,easy,hinglish,Caregiving.
+TR083,उसे समझ नहीं आया कि दोबारा अस्पताल क्यों जाना है।,She did not understand why she has to go to the hospital again.,0,0,0,0,1,train,easy,hindi_devanagari,Does not understand reason for referral.
+TR084,"पर्ची पढ़ नहीं सकती, किस विभाग में जाना है पता नहीं",She cannot read the slip and does not know which department to go to.,0,0,0,0,1,train,easy,hindi_devanagari,Lacks information on where to go.
+TR085,"कह रही है अब तो ठीक लग रहा है, फिर जाने का क्या फायदा","She says she feels fine now, so what is the use of going.",0,0,0,0,1,train,medium,hindi_devanagari,Does not see the need for follow-up.
+TR086,"तारीख याद नहीं, कब बुलाया था भूल गई",She does not remember the date; she forgot when she was called.,0,0,0,0,1,train,easy,hindi_devanagari,Missing information about when to attend.
+TR087,सोचती है दवाई खा ली तो काम हो गया,"She thinks that once she has taken the medicine, the job is done.",0,0,0,0,1,train,medium,hindi_devanagari,Misunderstands that further steps are needed.
+TR088,"उसे लगा जांच यहीं हो गई, आगे कुछ नहीं करना",She thought the test was done here and nothing more needs to be done.,0,0,0,0,1,train,medium,hindi_devanagari,Misunderstands referral.
+TR089,"जिस अस्पताल जाना है, वो जगह उसे नहीं पता",She does not know where the hospital she has to go to is.,0,0,0,0,1,train,medium,hindi_devanagari,"Lacks information about the destination. Not knowing the location is information, not transport."
+TR090,"डॉक्टर ने जो लिखा वो सब अंग्रेज़ी में है, किसी से पढ़वाया नहीं",What the doctor wrote is all in English; she has not had anyone read it to her.,0,0,0,0,1,train,medium,hindi_devanagari,Cannot access written referral information.
+TR091,"उसे लगा ये सिर्फ सलाह थी, ज़रूरी नहीं",She thought it was only advice and not necessary.,0,0,0,0,1,train,medium,hindi_devanagari,Misunderstands importance of referral.
+TR092,"वहां पहुंचकर क्या करना है, किससे मिलना है, कुछ नहीं पता",She has no idea what to do after reaching there or whom to meet.,0,0,0,0,1,train,easy,hindi_devanagari,Lacks navigation information.
+TR093,बोली जब तकलीफ़ होगी तब देख लेंगे,She said they will see when there is some trouble.,0,0,0,0,1,train,hard,hindi_devanagari,Low understanding of why follow-up is needed now. Could also be read as hesitancy; review.
+TR094,रिपोर्ट में क्या लिखा है उसे किसी ने समझाया नहीं,Nobody explained to her what is written in the report.,0,0,0,0,1,train,medium,hindi_devanagari,Information gap.
+TR095,उसे लगता है ये वही जांच है जो पिछले साल हो चुकी,She thinks this is the same test that was already done last year.,0,0,0,0,1,train,hard,hindi_devanagari,Misunderstands referral purpose.
+TR096,"अस्पताल वालों ने फोन पर कुछ कहा था, ठीक से सुन नहीं पाई",The hospital staff said something on the phone; she could not hear it properly.,0,0,0,0,1,train,hard,hindi_devanagari,Did not receive the information.
+TR097,usko pata hi nahi kab jaana hai,She does not even know when to go.,0,0,0,0,1,train,easy,roman_hindi,Missing date information.
+TR098,samajh nahi aaya doctor ne kya bola,She did not understand what the doctor said.,0,0,0,0,1,train,easy,roman_hindi,Did not understand the explanation.
+TR099,bol rahi ab theek hai to zaroorat nahi,She says she is fine now so there is no need.,0,0,0,0,1,train,medium,roman_hindi,"Does not see the need. The view is her own, unlike a husband's refusal."
+TR100,"parchi kho gayi, kahan jaana tha yaad nahi",The slip is lost and she does not remember where she had to go.,0,0,0,0,1,train,medium,roman_hindi,Lost referral information.
+TR101,referral ka reason usko clear nahi hai,The reason for the referral is not clear to her.,0,0,0,0,1,train,easy,hinglish,Does not understand reason.
+TR102,"date confuse ho gayi, usne next week samjha tha",She got confused about the date; she thought it was next week.,0,0,0,0,1,train,medium,hinglish,Date misunderstanding.
+TR103,कुछ परेशानी है।,There is some problem.,0,0,0,0,0,train,hard,hindi_devanagari,Too vague to infer any barrier; ask the patient.
+TR104,मंगलवार को बेटे के साथ जाएगी।,She will go with her son on Tuesday.,0,0,0,0,0,train,easy,hindi_devanagari,"A plan, not a barrier. Family mention without constraint."
+TR105,"घर पर नहीं मिली, कल फिर आना है",She was not at home; have to come again tomorrow.,0,0,0,0,0,train,medium,hindi_devanagari,Worker's visit note; no barrier reported.
+TR106,"बात हुई, जाने को तैयार है",Spoke with her; she is ready to go.,0,0,0,0,0,train,easy,hindi_devanagari,No barrier.
+TR107,पति खुद मोटरसाइकिल से ले जाएंगे,Her husband himself will take her by motorcycle.,0,0,0,0,0,train,medium,hindi_devanagari,"Husband and transport are mentioned but as solutions, not barriers."
+TR108,बाद में बताएगी,She will tell later.,0,0,0,0,0,train,hard,hindi_devanagari,No reason given.
+TR109,"अभी नहीं जा पाएगी, कारण नहीं बताया",She will not be able to go now; she did not give a reason.,0,0,0,0,0,train,hard,hindi_devanagari,Non-attendance with no stated barrier.
+TR110,"पैसों का इंतज़ाम हो गया है, अगले हफ्ते जाएगी",The money has been arranged; she will go next week.,0,0,0,0,0,train,hard,hindi_devanagari,Money mentioned as resolved.
+TR111,"आशा दीदी साथ जाएंगी, कोई दिक्कत नहीं बताई",The ASHA didi will go with her; she mentioned no difficulty.,0,0,0,0,0,train,medium,hindi_devanagari,No barrier.
+TR112,फोन बंद आ रहा है,The phone is switched off.,0,0,0,0,0,train,medium,hindi_devanagari,No information from patient.
+TR113,"घर में थोड़ी बात है, बाद में बताएगी",There is a bit of a matter at home; she will tell later.,0,0,0,0,0,train,hard,hindi_devanagari,"Vague hint about home, not specific enough to code a household constraint. Ask."
+TR114,"डर नहीं है, बस तारीख तय करनी है",She is not scared; a date just needs to be fixed.,0,0,0,0,0,train,hard,hindi_devanagari,Fear explicitly denied.
+TR115,"अस्पताल वाली जांच हो गई, रिपोर्ट लेकर आई है",The hospital test is done; she has brought the report.,0,0,0,0,0,train,medium,hindi_devanagari,Referral completed; no barrier.
+TR116,kal jaayegi bol rahi,She says she will go tomorrow.,0,0,0,0,0,train,easy,roman_hindi,No barrier.
+TR117,bas thoda problem hai,There is just a bit of a problem.,0,0,0,0,0,train,hard,roman_hindi,Too vague.
+TR118,ghar pe koi nahi tha,There was nobody at home.,0,0,0,0,0,train,medium,roman_hindi,Visit note; the phrase resembles no-accompaniment notes but describes the visit.
+TR119,"patient ready hai, Monday ko jayegi",The patient is ready; she will go on Monday.,0,0,0,0,0,train,easy,hinglish,No barrier.
+TR120,"follow up call kiya, no response",Made a follow-up call; no response.,0,0,0,0,0,train,medium,hinglish,No information.
+TR121,"OPD card बन गया है, कल जाएगी",The OPD card has been made; she will go tomorrow.,0,0,0,0,0,train,easy,mixed,No barrier.
+TR122,"call किया, बोली सोचकर बताएगी",Called her; she said she will think and let us know.,0,0,0,0,0,train,hard,mixed,Neutral deferral; no stated barrier. Compare with explicit hesitancy rows.
+TR123,"transport arrange हो गया है, family भी साथ है",Transport has been arranged and the family is with her too.,0,0,0,0,0,train,hard,mixed,Transport and family mentioned as resolved.
+TR124,"visit पर मिली, कोई issue नहीं बताया",Met her during the visit; she mentioned no issue.,0,0,0,0,0,train,medium,mixed,No barrier.
+TR125,किराया भी नहीं है और पति भी मना कर रहे हैं,"There is no money for the fare, and her husband is also refusing.",1,1,0,0,0,train,easy,hindi_devanagari,Travel cost plus husband's refusal.
+TR126,"पैसा पति के हाथ में रहता है, वो देंगे तभी जा पाएगी",The money stays in her husband's hands; she can only go if he gives it.,1,1,0,0,0,train,medium,hindi_devanagari,Money access controlled by husband: both cost and household.
+TR127,अस्पताल दूर है और साथ जाने को कोई खाली नहीं,The hospital is far and nobody is free to go with her.,1,1,0,0,0,train,easy,hindi_devanagari,Distance plus no accompaniment.
+TR128,"एक दिन की मज़दूरी जाएगी, ऊपर से बस का खर्च अलग","She will lose a day's wages, and the bus cost on top of that.",1,0,0,1,0,train,easy,hindi_devanagari,Lost wages (work) plus travel cost.
+TR129,खेत में काम है और शहर तक जाने का साधन भी नहीं,"There is work in the fields, and no transport to town either.",1,0,0,1,0,train,medium,hindi_devanagari,Farm work plus no transport.
+TR130,डर भी है और समझ भी नहीं आया कि जाना क्यों ज़रूरी है,She is scared and also did not understand why it is necessary to go.,0,0,1,0,1,train,medium,hindi_devanagari,Fear plus not understanding the need.
+TR131,बच्चों को छोड़कर जाना है और सास साथ देने को तैयार नहीं,"She would have to leave the children, and her mother-in-law is not willing to help.",0,1,0,1,0,train,medium,hindi_devanagari,Childcare plus lack of family support.
+TR132,"पति कहते हैं इलाज में बहुत पैसा लगेगा, रहने दो","Her husband says the treatment will cost a lot, so leave it.",1,1,0,0,0,train,hard,hindi_devanagari,Cost concern plus husband's decision.
+TR133,"गांव की औरतें कह रही थीं वहां जाकर बीमारी बढ़ जाती है, इसलिए डर गई","Women in the village were saying that going there makes the illness worse, so she got scared.",0,0,1,0,1,train,hard,hindi_devanagari,Fear arising from misinformation.
+TR134,"सुपरवाइज़र बोला फिर गैरहाज़िर हुई तो काम से निकाल देंगे, इसी का डर है",The supervisor said that if she is absent again she will be dismissed; that is what she fears.,0,0,0,1,0,train,hard,hindi_devanagari,"Work barrier. The fear is about losing the job, not about care, so fear_hesitancy is 0."
+TR135,पर्ची गुम हो गई और दोबारा आने-जाने का पैसा नहीं,"The slip got lost, and there is no money to make the trip again.",1,0,0,0,1,train,medium,hindi_devanagari,Lost referral information plus travel cost.
+TR136,"पति बाहर मजदूरी पर हैं, उनके बिना नहीं जाएगी, और बच्चे भी छोटे हैं","Her husband is away doing labour; she will not go without him, and the children are small too.",0,1,0,1,0,train,hard,hindi_devanagari,Needs husband to accompany her; childcare. The labour is the husband's.
+TR137,"ऑपरेशन के नाम से डरती है, घरवाले भी कहते हैं मत कराओ","She is scared at the mention of an operation, and the family also says not to have it.",0,1,1,0,0,train,medium,hindi_devanagari,Procedure fear plus family opposition.
+TR138,"बोली पैसे होते तो चली जाती, पर डर भी लगता है","She said she would have gone if she had money, but she also feels scared.",1,0,1,0,0,train,medium,hindi_devanagari,Lack of money plus fear.
+TR139,"रोज़ खेत जाना होता है, और उसे लगता है अब ज़रूरत भी नहीं","She has to go to the fields every day, and she feels there is no need anymore.",0,0,0,1,1,train,medium,hindi_devanagari,Farm work plus not seeing the need.
+TR140,"रास्ता लंबा है, अकेले जाने में डर लगता है, पति काम पर रहते हैं","The journey is long, she is afraid to go alone, and her husband is at work.",1,1,0,0,0,train,hard,hindi_devanagari,"Distance plus no one to accompany her. Fear of travelling alone is coded as accompaniment, not care-related fear. Review."
+TR141,"सास की देखभाल और घर का सारा काम उसी पर, पति कहते हैं बाद में देखेंगे",Caring for her mother-in-law and all the housework fall on her; her husband says they will see later.,0,1,0,1,0,train,hard,hindi_devanagari,Caregiving plus husband postponing.
+TR142,"जांच का खर्च सुना तो डर गई, कहा पहले घर में पूछूंगी",She got worried on hearing the cost of the tests and said she will ask at home first.,1,1,0,0,0,train,hard,hindi_devanagari,"Cost worry plus household decision. The worry is about money, not care, so fear_hesitancy is 0."
+TR143,"शहर कभी गई नहीं, रास्ता नहीं पता, और गाड़ी का किराया भी ज़्यादा","She has never been to town, does not know the way, and the vehicle fare is also high.",1,0,0,0,1,train,medium,hindi_devanagari,Lacks route information plus travel cost.
+TR144,"मंडी में सब्ज़ी बेचती है, और उसे लगा रिपोर्ट नॉर्मल है","She sells vegetables at the market, and she thought the report was normal.",0,0,0,1,1,train,hard,hindi_devanagari,Own work plus misunderstanding of the report. No clinical claim about the report itself.
+TR145,"पति की इजाज़त नहीं, और खुद भी लोकलाज से हिचक रही है","There is no permission from her husband, and she herself is hesitating out of social shame.",0,1,1,0,0,train,medium,hindi_devanagari,Household permission plus stigma-related hesitancy.
+TR146,"धान रोपाई का समय है, पैसे भी नहीं, और घर से भी कोई साथ नहीं","It is paddy-transplanting time, there is no money either, and no one from home to go with her.",1,1,0,1,0,train,hard,hindi_devanagari,"Three barriers: farm work, money, accompaniment."
+TR147,"सोचती है वहां बहुत खर्चा होगा, किसी ने खर्च के बारे में ठीक से बताया नहीं",She thinks it will cost a lot there; nobody explained the costs to her properly.,1,0,0,0,1,train,hard,hindi_devanagari,Perceived cost plus an information gap about costs.
+TR148,paise bhi nahi aur pati bhi nahi maan rahe,"There is no money, and her husband is not agreeing either.",1,1,0,0,0,train,easy,roman_hindi,Money plus husband's refusal.
+TR149,darr lagta hai aur ghar wale bhi saath nahi de rahe,"She is scared, and the family is not supporting her either.",0,1,1,0,0,train,medium,roman_hindi,Fear plus lack of family support.
+TR150,"kaam chhod ke jaaye to dihadi katti hai, bus ka kiraya alag","If she leaves work her daily wage is cut, and the bus fare is extra.",1,0,0,1,0,train,medium,roman_hindi,Lost wages plus travel cost.
+TR151,"bachcha ghar pe bimar hai, aur use samajh nahi aaya kab jaana hai","Her child is ill at home, and she did not understand when to go.",0,0,0,1,1,train,medium,roman_hindi,Caregiving plus date confusion.
+TR152,"hospital door hai, aur sharam bhi aati hai","The hospital is far, and she also feels embarrassed.",1,0,1,0,0,train,easy,roman_hindi,Distance plus embarrassment.
+TR153,financial issue hai plus husband ka support nahi,There is a financial issue plus no support from her husband.,1,1,0,0,0,train,easy,hinglish,Money plus husband not supportive.
+TR154,"scared hai, aur kyon jaana hai ye bhi nahi samjhi","She is scared, and she also did not understand why she has to go.",0,0,1,0,1,train,easy,hinglish,Fear plus not understanding.
+TR155,"harvest season hai, plus koi accompany karne wala nahi","It is harvest season, plus there is no one to accompany her.",0,1,0,1,0,train,medium,hinglish,Farm work plus no accompaniment.
+TR156,"travel ka kharcha zyada hai, aur usko lagta hai ab zarurat nahi","The travel expense is high, and she thinks there is no need now.",1,0,0,0,1,train,medium,hinglish,Travel cost plus not seeing the need.
+TR157,transport नहीं है और daily wage भी जाएगी,There is no transport and the daily wage will also be lost.,1,0,0,1,0,train,easy,mixed,No transport plus lost wages.
+TR158,"husband मना कर रहे, और उसे procedure से fear है","Her husband is refusing, and she is afraid of the procedure.",0,1,1,0,0,train,easy,mixed,Husband refusal plus procedure fear.
+TR159,"report का मतलब समझ नहीं आया, और बच्चे को छोड़ नहीं सकती","She did not understand what the report means, and she cannot leave the child.",0,0,0,1,1,train,medium,mixed,Information gap plus childcare.
+TR160,"family शादी में busy है, और बस का fare भी नहीं","The family is busy with a wedding, and there is no bus fare either.",1,1,0,0,0,train,medium,mixed,Family unavailable plus no fare.

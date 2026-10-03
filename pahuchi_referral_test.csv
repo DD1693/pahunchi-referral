@@ -1,0 +1,41 @@
+id,text_hi,text_en,access_cost,household_constraint,fear_hesitancy,work_caregiving,understanding_information,split,difficulty,language_style,rationale
+TE001,"बस वाला बोला रूट बंद है, कब चालू होगा पता नहीं",The bus driver said the route is closed; nobody knows when it will restart.,1,0,0,0,0,test,medium,hindi_devanagari,Transport unavailable.
+TE002,हाथ तंग है इस महीने,Her hand is tight this month (a common idiom for being short of money).,1,0,0,0,0,test,hard,hindi_devanagari,Idiom for money shortage; no explicit money word.
+TE003,"बड़े भैया जब तक हां न कहें, कहीं नहीं जाती",She does not go anywhere until her elder brother says yes.,0,1,0,0,0,test,medium,hindi_devanagari,"Needs family permission (brother, a relation not used for permission in training)."
+TE004,"पति साथ गए थे पिछली बार, इस बार भी जाएंगे",Her husband went with her last time and will go this time too.,0,0,0,0,0,test,hard,hindi_devanagari,Husband mentioned as support; no barrier. Adversarial.
+TE005,डाक्टर के पास जाने के नाम से कांपने लगती है,She starts trembling at the very mention of going to the doctor.,0,0,1,0,0,test,medium,hindi_devanagari,Fear expressed without the usual fear words; spelling variant of doctor.
+TE006,"कटाई खतम होते ही जाएगी, अभी फुरसत नहीं",She will go as soon as the harvest is over; no time right now.,0,0,0,1,0,test,medium,hindi_devanagari,Farm work; misspelling of khatam.
+TE007,"उसे लगा बात खत्म, दवा जो मिल गई",She thought the matter was over since she got medicine.,0,0,0,0,1,test,medium,hindi_devanagari,Misunderstands need for referral.
+TE008,"पैसा नहीं है, डर कोई नहीं",There is no money; no fear at all.,1,0,0,0,0,test,hard,hindi_devanagari,Money barrier; fear explicitly denied. Negation trap.
+TE009,"मायके गई हुई है, लौटकर बात करेंगे",She has gone to her parents' home; will talk when she returns.,0,0,0,0,0,test,hard,hindi_devanagari,Family word but only absence; no barrier. Adversarial.
+TE010,"छोटे वाले को बुखार है, उसे छोड़ नहीं सकती अभी",The little one has a fever; she cannot leave him right now.,0,0,0,1,0,test,medium,hindi_devanagari,Caregiving for a sick child.
+TE011,"सरपंच से गाड़ी मांगी थी, नहीं मिली",She asked the sarpanch for a vehicle and did not get one.,1,0,0,0,0,test,hard,hindi_devanagari,"No transport, expressed indirectly."
+TE012,"लोग क्या सोचेंगे, ये बात उसे खाए जा रही है",What people will think is eating away at her.,0,0,1,0,0,test,medium,hindi_devanagari,"Stigma worry, idiomatic phrasing."
+TE013,"काम भी, पैसा भी, सब दिक्कत है","Work, money, everything is a problem.",1,0,0,1,0,test,hard,hindi_devanagari,Fragmentary note listing work and money.
+TE014,ASHA ने समझाया फिर भी बोली जरूरत नही,"The ASHA explained, yet she said there is no need.",0,0,0,0,1,test,hard,mixed,Does not see the need; misspelling. Could be hesitancy; review.
+TE015,"पति परदेस में, सास बीमार, सब उसी पे","Husband is away in another state, mother-in-law is ill, everything is on her.",0,0,0,1,0,test,hard,hindi_devanagari,"Caregiving load. Husband's absence is not stated as a barrier to going, so household is 0. Review."
+TE016,"ससुराल वाले बोले जांच-वांच कुछ नहीं, और उसे भी डर है","The in-laws said no tests or anything of the sort, and she is scared too.",0,1,1,0,0,test,medium,hindi_devanagari,Family refusal plus fear.
+TE017,"रास्ते में नाला है, बारिश में रास्ता बंद, और पति भी इजाजत नहीं देंगे","There is a stream on the way, the road closes in the rain, and her husband will not give permission either.",1,1,0,0,0,test,medium,hindi_devanagari,Physical access plus husband permission.
+TE018,"कब जाना था भूल गई, और खेत भी देखना है","She forgot when she was supposed to go, and she has to look after the field too.",0,0,0,1,1,test,medium,hindi_devanagari,Date forgotten plus farm work.
+TE019,"बोली भगवान की मर्जी, जो होगा देखा जाएगा",She said it is God's will; whatever happens will be seen.,0,0,1,0,0,test,hard,hindi_devanagari,Fatalistic belief treated as hesitancy. Review.
+TE020,अस्पताल में डॉक्टर की कमी है ऐसा सुना है,She has heard that the hospital is short of doctors.,0,0,0,0,0,test,hard,hindi_devanagari,Supply-side hearsay; no personal reluctance or barrier stated. Outside taxonomy. Review.
+TE021,"पैसे की बात नहीं, बस साथ जाने वाला चाहिए",It is not about money; she just needs someone to go with her.,0,1,0,0,0,test,hard,hindi_devanagari,Accompaniment need; money explicitly ruled out. Negation trap.
+TE022,kiraya nai h,No fare.,1,0,0,0,0,test,medium,roman_hindi,Travel cost; abbreviated spelling.
+TE023,ghrwale mana kr rhe,The family is refusing.,0,1,0,0,0,test,medium,roman_hindi,Family refusal; vowel-dropped spelling.
+TE024,report dekh ke bahut ghabra rahi thi,She was very anxious after seeing the report.,0,0,1,0,0,test,easy,roman_hindi,Anxiety.
+TE025,dihadi ka nuksan hoga,There will be a loss of daily wages.,0,0,0,1,0,test,medium,roman_hindi,Lost wages coded as work.
+TE026,"wahan jaake kisse milna hai, kuch idea nahi usko",She has no idea whom to meet after getting there.,0,0,0,0,1,test,easy,roman_hindi,Navigation information gap.
+TE027,kal koi mila nahi,Did not meet anyone yesterday.,0,0,0,0,0,test,medium,roman_hindi,Ambiguous visit note; no barrier.
+TE028,"pati le jayenge, paise ka intezam hai",Her husband will take her; the money is arranged.,0,0,0,0,0,test,hard,roman_hindi,Husband and money mentioned as resolved. Adversarial.
+TE029,"saas ki seva, bachche, khet... time hi nahi","Caring for her mother-in-law, the children, the field... no time at all.",0,0,0,1,0,test,medium,roman_hindi,Caregiving and farm work.
+TE030,dar to hai par jayegi,She is scared but she will go.,0,0,1,0,0,test,hard,roman_hindi,Fear is expressed even though she intends to go; labels capture stated barriers.
+TE031,door bahut h aur akele nahi jaa sakti,It is very far and she cannot go alone.,1,1,0,0,0,test,medium,roman_hindi,Distance plus needs accompaniment.
+TE032,is month budget nahi hai,There is no budget this month.,1,0,0,0,0,test,medium,hinglish,Money shortage in English loanword.
+TE033,in-laws allow nahi kar rahe,The in-laws are not allowing it.,0,1,0,0,0,test,easy,hinglish,Family permission.
+TE034,hospital ko leke anxiety hai,She has anxiety about the hospital.,0,0,1,0,0,test,easy,hinglish,Anxiety.
+TE035,"shift duty hai, off nahi milta",She has shift duty and does not get a day off.,0,0,0,1,0,test,easy,hinglish,Work.
+TE036,usko laga follow up optional hai,She thought the follow-up was optional.,0,0,0,0,1,test,medium,hinglish,Misunderstands importance.
+TE037,"sab theek hai, next visit pe confirm karenge",All is fine; will confirm on the next visit.,0,0,0,0,0,test,medium,hinglish,No barrier.
+TE038,money problem + child ko koi dekhne wala nahi,"Money problem, and nobody to look after the child.",1,0,0,1,0,test,medium,hinglish,Money plus childcare.
+TE039,"husband की permission है, बस date fix करनी है",Her husband has given permission; just need to fix a date.,0,0,0,0,0,test,hard,mixed,Permission mentioned as granted. Adversarial.
+TE040,"उसे लगता है report normal है, और travel का खर्च भी","She thinks the report is normal, and there is the travel cost too.",1,0,0,0,1,test,medium,mixed,Misunderstanding plus travel cost.
