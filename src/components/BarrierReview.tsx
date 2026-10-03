@@ -1,7 +1,8 @@
 import { AlertTriangle, Check, HelpCircle, Smartphone, Sparkles, UserCheck } from "lucide-react";
-import { analyseNote, modelReady, type ClassifyResult } from "@/lib/sahaay";
-import { BARRIERS, type BarrierLabel } from "@/lib/types";
-import { AudioPromptButton, OPENING_PROMPT } from "@/components/AudioPromptButton";
+import { useMemo } from "react";
+import { analyseNote, askNextLabel, explainNote, modelReady, type ClassifyResult } from "@/lib/sahaay";
+import { BARRIERS, barrierMeta, type BarrierLabel } from "@/lib/types";
+import { AudioPromptButton, BARRIER_PROMPTS, OPENING_PROMPT } from "@/components/AudioPromptButton";
 
 export interface ReviewState {
   result: ClassifyResult | null;
@@ -79,6 +80,29 @@ export function BarrierReview({
   const statusOf = (l: BarrierLabel) => review.result?.results.find((r) => r.label === l)?.status;
   const stale = review.result && review.analysedNote !== note;
   const noneDetected = review.result && review.result.detected.length === 0;
+
+  // Explanations come only from pahunchi_explain.js (real model weights), on the analysed note.
+  const explanation = useMemo(() => {
+    if (!review.result || !ready) return null;
+    try {
+      return explainNote(review.analysedNote);
+    } catch {
+      return null;
+    }
+  }, [review.result, review.analysedNote, ready]);
+  const nextLabel = useMemo(() => {
+    if (!review.result) return null;
+    const l = askNextLabel(review.result);
+    return l && l in BARRIER_PROMPTS ? (l as BarrierLabel) : null;
+  }, [review.result]);
+
+  function focusNote() {
+    const el = document.getElementById("barrier-note") as HTMLTextAreaElement | null;
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    el.focus();
+    el.setSelectionRange(el.value.length, el.value.length);
+  }
 
   return (
     <section aria-labelledby="note-h" className="space-y-4">
@@ -166,12 +190,26 @@ export function BarrierReview({
 
           {noneDetected && <NotSure />}
 
+          {nextLabel && (
+            <div className="rounded-xl border border-attention/40 bg-attention-soft p-4 space-y-2">
+              <p className="font-semibold text-attention-foreground">One thing is unclear: {barrierMeta(nextLabel).en}</p>
+              <p className="text-sm text-attention-foreground">Ask one more question:</p>
+              <AudioPromptButton src={BARRIER_PROMPTS[nextLabel]} />
+              <div>
+                <button type="button" className="btn-secondary min-h-10 text-sm" onClick={focusNote}>
+                  Add answer to note and analyse again
+                </button>
+              </div>
+            </div>
+          )}
+
           <fieldset>
             <legend className="eyebrow mb-2">Tap to confirm each barrier you agree with</legend>
             <ul className="space-y-2">
               {BARRIERS.map((b) => {
                 const st = statusOf(b.label);
                 const on = review.confirmed.includes(b.label);
+                const ex = explanation?.[b.label];
                 return (
                   <li key={b.label}>
                     <button
@@ -207,6 +245,23 @@ export function BarrierReview({
                         )}
                       </span>
                     </button>
+                    {(st === "detected" || st === "possible") && ex && (
+                      <div className="mt-1.5 px-3 text-sm">
+                        {ex.evidence.length > 0 && (
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <span className="text-muted-foreground">Words from the note:</span>
+                            {ex.evidence.map((e) => (
+                              <span key={e.word} lang="hi" className="hindi rounded-md bg-secondary px-2 py-0.5 text-secondary-foreground">
+                                {e.word}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        {ex.weak && (
+                          <p className="mt-1 text-attention-foreground">Evidence is weak — check with the patient before confirming.</p>
+                        )}
+                      </div>
+                    )}
                   </li>
                 );
               })}

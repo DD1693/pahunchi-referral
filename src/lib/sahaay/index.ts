@@ -2,6 +2,7 @@
 // prepared once at app start, and the supplied classify() does all inference.
 import modelJson from "./sahaay_model_v0.1.json";
 import { prepare, classify, type PreparedModel, type ClassifyResult, type SahaayModel } from "./sahaay_classifier.js";
+import { explain, askNext, type LabelExplanation } from "./pahunchi_explain.js";
 
 let prepared: PreparedModel | null = null;
 let loadError: string | null = null;
@@ -32,4 +33,14 @@ export function analyseNote(note: string): ClassifyResult {
   return classify(prepared, note);
 }
 
-export type { ClassifyResult };
+/** Evidence words from the supplied model-weight helper (pahunchi_explain.js). */
+export function explainNote(note: string): Record<string, LabelExplanation> {
+  if (!prepared) throw new ModelNotLoadedError("Offline AI model could not be loaded.");
+  return explain(prepared, note);
+}
+
+export function askNextLabel(result: ClassifyResult): string | null {
+  return askNext(result);
+}
+
+export type { ClassifyResult, LabelExplanation };
