@@ -1,12 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { Building2, CalendarClock, ChevronRight, CloudUpload } from "lucide-react";
-import { displayStatus, formatDate, timing, timingLabel } from "@/lib/followup";
+import { arrivalState, displayStatus, formatDate, timing, timingLabel } from "@/lib/followup";
 import { barrierMeta, type Referral } from "@/lib/types";
 
 export function StatusPill({ r }: { r: Referral }) {
   const s = displayStatus(r);
   const cls =
-    s === "Completed"
+    s === "Completed" || s === "Arrival verified" || s === "Patient reports arrival"
       ? "bg-success-soft text-success"
       : s === "Follow-up due" || s === "Not completed"
         ? "bg-attention-soft text-attention-foreground"
@@ -15,7 +15,8 @@ export function StatusPill({ r }: { r: Referral }) {
 }
 
 export function ReferralCard({ r, showSync = false }: { r: Referral; showSync?: boolean }) {
-  const tm = timing(r);
+  // Display-only: arrival information means the date-based arrival task is no longer outstanding.
+  const tm = r.outcome !== "completed" && arrivalState(r) !== "none" ? "closed" : timing(r);
   return (
     <Link
       to="/referral"
