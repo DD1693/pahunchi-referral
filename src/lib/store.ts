@@ -229,7 +229,46 @@ export async function recordSimulatedReply(r: Referral, body: string, parsed: "p
   const withReply = { ...r, smsEvents, history: [...r.history, { type: "sms_reply_simulated" as const, at, detail: `Reply "${body.trim()}"` }] };
   await updateReferral(
     withReply,
-    { arrivals: [...(r.arrivals ?? []), { type: "patient_reported_arrival", referralCode: r.referralCode!, at }] },
-    { type: "patient_reported_arrival", at, detail: r.referralCode! },
+    { arrivals: [...(r.arrivals ?? []), { type: "patient_reported_arrival", referralCode: r.referralCode!, at, source: "sms" }] },
+    { type: "patient_reported_arrival", at, detail: `${r.referralCode!} · via SMS` },
   );
+}
+
+/** Starts a SIMULATED IVR call. No call is placed. Returns the local call id. */
+export async function recordSimulatedIvrCall(r: Referral): Promise<string> {
+  const at = new Date().toISOString();
+  const callId = `ivr-${Date.now().toString(36)}`;
+  await updateReferral(
+    r,
+    { ivrEvents: [...(r.ivrEvents ?? []), { callId, kind: "call_started", at, simulated: true }] },
+    { type: "ivr_call_simulated", at, detail: "Simulated — no call was made" },
+  );
+  return callId;
+}
+
+/** Records a SIMULATED keypad press. "1" adds the same patient_reported_arrival (source: ivr), once per call. */
+export async function recordSimulatedIvrKeypress(
+  r: Referral,
+  callId: string,
+  key: string,
+  parsed: "patient_reported_arrival" | "unrecognised",
+): Promise<"patient_reported_arrival" | "unrecognised" | "duplicate"> {
+  const at = new Date().toISOString();
+  const already = (r.ivrEvents ?? []).some((e) => e.callId === callId && e.parsed === "patient_reported_arrival");
+  const result: "patient_reported_arrival" | "unrecognised" | "duplicate" = parsed === "patient_reported_arrival" && already ? "duplicate" : parsed;
+  const ivrEvents = [...(r.ivrEvents ?? []), { callId, kind: "keypress" as const, key, parsed: result, at, simulated: true as const }];
+  if (result !== "patient_reported_arrival") {
+    await updateReferral(r, { ivrEvents }, {
+      type: "ivr_keypress_simulated", at,
+      detail: result === "duplicate" ? `Key ${key} — already recorded for this call` : `Key ${key} — not recognised, no status change`,
+    });
+    return result;
+  }
+  const withPress = { ...r, ivrEvents, history: [...r.history, { type: "ivr_keypress_simulated" as const, at, detail: `Key ${key}` }] };
+  await updateReferral(
+    withPress,
+    { arrivals: [...(r.arrivals ?? []), { type: "patient_reported_arrival", referralCode: r.referralCode!, at, source: "ivr" }] },
+    { type: "patient_reported_arrival", at, detail: `${r.referralCode!} · via IVR` },
+  );
+  return result;
 }

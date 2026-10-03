@@ -4,6 +4,7 @@ import { formatStamp } from "@/lib/followup";
 import { buildReminderSms, parseSmsReply, UNRECOGNISED_REPLY } from "@/lib/sms";
 import { recordSimulatedReminder, recordSimulatedReply } from "@/lib/store";
 import type { Referral } from "@/lib/types";
+import { IvrFollowUp } from "@/components/IvrFollowUp";
 
 export function SmsFollowUp({ r }: { r: Referral }) {
   const [reply, setReply] = useState("");
@@ -67,7 +68,7 @@ export function SmsFollowUp({ r }: { r: Referral }) {
       {patientReported && (
         <div className="rounded-xl bg-success-soft p-3 text-sm">
           <p className="font-semibold text-success">Patient-reported arrival · {formatStamp(patientReported.at)}</p>
-          <p className="mt-1 text-muted-foreground">Reported by the patient via the SMS follow-up workflow. This does not verify diagnosis or treatment completion.</p>
+          <p className="mt-1 text-muted-foreground">Reported by the patient via {patientReported.source === "ivr" ? "the Voice / IVR" : "the SMS"} follow-up workflow. This does not verify diagnosis or treatment completion.</p>
         </div>
       )}
 
@@ -85,6 +86,8 @@ export function SmsFollowUp({ r }: { r: Referral }) {
           </ul>
         </div>
       )}
+
+      <IvrFollowUp r={r} />
     </section>
   );
 }

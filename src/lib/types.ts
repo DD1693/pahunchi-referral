@@ -28,7 +28,19 @@ export type HistoryType =
   | "action_planned"
   | "sms_reminder_simulated"
   | "sms_reply_simulated"
+  | "ivr_call_simulated"
+  | "ivr_keypress_simulated"
   | ArrivalType;
+
+/** One step of a SIMULATED IVR call (no telephony). */
+export interface IvrEvent {
+  callId: string;
+  kind: "call_started" | "keypress";
+  key?: string;
+  parsed?: "patient_reported_arrival" | "unrecognised" | "duplicate";
+  at: string;
+  simulated: true;
+}
 
 /** One SMS in the follow-up thread. `simulated` is always true in this prototype (no transport). */
 export interface SmsEvent {
@@ -47,6 +59,8 @@ export interface ArrivalEvent {
   type: ArrivalType;
   referralCode: string;
   at: string; // ISO timestamp
+  /** Channel for patient-reported arrivals (older records: SMS). */
+  source?: "sms" | "ivr";
 }
 
 export interface HistoryEvent {
@@ -75,6 +89,8 @@ export interface Referral {
   arrivals?: ArrivalEvent[];
   /** SMS follow-up thread (supports many reminders/replies later). Optional for older records. */
   smsEvents?: SmsEvent[];
+  /** Simulated Voice/IVR follow-up steps. Optional for older records. */
+  ivrEvents?: IvrEvent[];
   referralDate: string; // YYYY-MM-DD
   destination: string;
   department: string;
