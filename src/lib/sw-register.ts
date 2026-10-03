@@ -1,7 +1,7 @@
 // The ONLY service-worker registrar. Refuses in dev, iframes and Lovable preview hosts.
 const SW_URL = "/sw.js";
 const PAGES_CACHE = "pahunchi-pages";
-const APP_PATHS = ["/", "/referrals", "/new", "/insights", "/referral"];
+const APP_PATHS = ["/", "/referrals", "/new", "/insights", "/referral", "/arrival"];
 
 function refused(): boolean {
   if (!import.meta.env.PROD) return true;

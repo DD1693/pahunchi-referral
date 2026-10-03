@@ -25,7 +25,17 @@ export type HistoryType =
   | "not_completed"
   | "completed"
   | "synced"
-  | "action_planned";
+  | "action_planned"
+  | ArrivalType;
+
+/** Arrival confirmations are independent and non-exclusive; both may exist for one referral. */
+export type ArrivalType = "patient_reported_arrival" | "facility_verified_arrival";
+
+export interface ArrivalEvent {
+  type: ArrivalType;
+  referralCode: string;
+  at: string; // ISO timestamp
+}
 
 export interface HistoryEvent {
   type: HistoryType;
@@ -47,6 +57,10 @@ export interface WorkerNote {
 export interface Referral {
   id: string;
   patientId: string;
+  /** Short portable code (e.g. PH-7F3K). No personal or clinical info. Backfilled for older records. */
+  referralCode?: string;
+  /** Arrival confirmations (patient-reported and/or facility-verified). Optional for older records. */
+  arrivals?: ArrivalEvent[];
   referralDate: string; // YYYY-MM-DD
   destination: string;
   department: string;

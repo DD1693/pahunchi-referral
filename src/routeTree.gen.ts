@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ArrivalRouteImport } from './routes/arrival'
 import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as NewRouteImport } from './routes/new'
 import { Route as ReferralRouteImport } from './routes/referral'
@@ -18,6 +19,11 @@ import { Route as ReferralsRouteImport } from './routes/referrals'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArrivalRoute = ArrivalRouteImport.update({
+  id: '/arrival',
+  path: '/arrival',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InsightsRoute = InsightsRouteImport.update({
@@ -43,6 +49,7 @@ const ReferralsRoute = ReferralsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/arrival': typeof ArrivalRoute
   '/insights': typeof InsightsRoute
   '/new': typeof NewRoute
   '/referral': typeof ReferralRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/arrival': typeof ArrivalRoute
   '/insights': typeof InsightsRoute
   '/new': typeof NewRoute
   '/referral': typeof ReferralRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/arrival': typeof ArrivalRoute
   '/insights': typeof InsightsRoute
   '/new': typeof NewRoute
   '/referral': typeof ReferralRoute
@@ -65,14 +74,23 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/insights' | '/new' | '/referral' | '/referrals'
+  fullPaths:
+    '/' | '/arrival' | '/insights' | '/new' | '/referral' | '/referrals'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/insights' | '/new' | '/referral' | '/referrals'
-  id: '__root__' | '/' | '/insights' | '/new' | '/referral' | '/referrals'
+  to: '/' | '/arrival' | '/insights' | '/new' | '/referral' | '/referrals'
+  id:
+    | '__root__'
+    | '/'
+    | '/arrival'
+    | '/insights'
+    | '/new'
+    | '/referral'
+    | '/referrals'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ArrivalRoute: typeof ArrivalRoute
   InsightsRoute: typeof InsightsRoute
   NewRoute: typeof NewRoute
   ReferralRoute: typeof ReferralRoute
@@ -86,6 +104,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/arrival': {
+      id: '/arrival'
+      path: '/arrival'
+      fullPath: '/arrival'
+      preLoaderRoute: typeof ArrivalRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/insights': {
@@ -121,6 +146,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ArrivalRoute: ArrivalRoute,
   InsightsRoute: InsightsRoute,
   NewRoute: NewRoute,
   ReferralRoute: ReferralRoute,

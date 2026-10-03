@@ -4,6 +4,7 @@ import { useState } from "react";
 import { BarrierReview, emptyReview, reviewComplete, type ReviewState } from "@/components/BarrierReview";
 import { addDays, todayISO } from "@/lib/followup";
 import { FollowUpSupport } from "@/components/FollowUpSupport";
+import { ReferralCodeCard } from "@/components/ReferralCode";
 import { saveReferral, uid } from "@/lib/store";
 import type { HistoryEvent, Referral } from "@/lib/types";
 
@@ -83,12 +84,12 @@ function NewReferral() {
       updatedAt: now,
     };
     try {
-      await saveReferral(r);
-      if (r.confirmedBarriers.length > 0) {
-        setSaved(r);
+      const stored = await saveReferral(r);
+      if (stored.confirmedBarriers.length > 0) {
+        setSaved(stored);
         return;
       }
-      navigate({ to: "/referral", search: { id: r.id } });
+      navigate({ to: "/referral", search: { id: stored.id } });
     } catch (e) {
       console.error(e);
       setSaveError("Could not save on this device. Please try again.");
@@ -103,6 +104,7 @@ function NewReferral() {
         <p role="status" className="rounded-xl bg-success-soft p-3 font-semibold text-success">
           Referral {saved.patientId} saved on this device.
         </p>
+        <ReferralCodeCard code={saved.referralCode} />
         <FollowUpSupport r={saved} onDone={done} doneLabel="Continue without actions" />
       </div>
     );
