@@ -1,6 +1,7 @@
 import { Check, ShieldAlert } from "lucide-react";
 import { useState } from "react";
 import { FOLLOW_UP_ACTIONS, HOUSEHOLD_PRIVACY_NOTICE } from "@/lib/followupSupport";
+import { AudioPromptButton, BARRIER_PROMPTS } from "@/components/AudioPromptButton";
 import { updateReferral } from "@/lib/store";
 import { barrierMeta, type BarrierLabel, type PlannedAction, type Referral } from "@/lib/types";
 
@@ -49,6 +50,7 @@ export function FollowUpSupport({ r, onDone, doneLabel = "Skip for now" }: { r: 
             <span className="block font-semibold">{barrierMeta(b).en}</span>
             <span lang="hi" className="hindi block text-sm text-muted-foreground">{barrierMeta(b).hi}</span>
           </legend>
+          <AudioPromptButton src={BARRIER_PROMPTS[b]} />
           {b === "household_constraint" && (
             <p className="flex items-start gap-2 rounded-xl border border-attention/50 bg-attention-soft p-3 text-sm font-semibold text-attention-foreground">
               <ShieldAlert className="mt-0.5 h-5 w-5 shrink-0" aria-hidden /> {HOUSEHOLD_PRIVACY_NOTICE}
