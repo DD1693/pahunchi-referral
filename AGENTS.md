@@ -22,4 +22,4 @@
 - Facility type is a category id (`FACILITY_TYPES` in `src/lib/facilities/data.ts`) saved as `facilityType`; locked when chosen via the finder, manual selector otherwise; context only, never a ranking input.
 - Journeys: `journeyId` (PJ-XXXX, generated/backfilled in `src/lib/store.ts`) groups referral legs; onward referrals use `/new?onward=<id>` and set `parentReferralId`/`origin`; `referralOutcome` is operational and separate from follow-up `outcome`.
 - Arrival evidence has three non-exclusive sources (patient-reported, facility-verified, worker_confirmed_arrival); `needsAttention()` in `src/lib/followup.ts` groups operational follow-up, never by medical risk.
-- Basic-phone worker mode (`/basic-phone`) and sync (`/sync`) are explicit simulations; no network requests.
+- Basic Phone Access (`/basic-phone`) is a simulated SMS menu (create/check/confirm arrival) that reuses `saveReferral`, `findFacilities`, `findByCode` and `confirmWorkerArrival` — never a parallel store; it and sync (`/sync`) make no network requests.
