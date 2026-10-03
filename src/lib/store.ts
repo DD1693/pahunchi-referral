@@ -100,12 +100,50 @@ async function seedOnce(d: IDBPDatabase) {
   await tx.done;
 }
 
+// Referral codes: "PH-" + 4 chars from an unambiguous alphabet (no 0/O, 1/I/L).
+const CODE_ALPHABET = "23456789ABCDEFGHJKMNPQRSTUVWXYZ";
+function randomCode(): string {
+  const bytes = new Uint8Array(4);
+  if (typeof crypto !== "undefined" && "getRandomValues" in crypto) crypto.getRandomValues(bytes);
+  else for (let i = 0; i < 4; i++) bytes[i] = Math.floor(Math.random() * 256);
+  return "PH-" + Array.from(bytes, (b) => CODE_ALPHABET[b % CODE_ALPHABET.length]).join("");
+}
+/** Unique among codes already on this device; retries on collision. */
+export function newReferralCode(taken: Set<string>): string {
+  let c = randomCode();
+  while (taken.has(c)) c = randomCode();
+  taken.add(c);
+  return c;
+}
+export const normaliseCode = (s: string) => {
+  const t = s.toUpperCase().replace(/[^A-Z0-9]/g, "");
+  return t.startsWith("PH") ? `PH-${t.slice(2)}` : `PH-${t}`;
+};
+
 async function reload() {
   const d = await db();
   const all = (await d.getAll("referrals")) as Referral[];
+  // Backfill codes for older/demo records, in place, without touching other fields.
+  const taken = new Set(all.map((r) => r.referralCode).filter(Boolean) as string[]);
+  const missing = all.filter((r) => !r.referralCode);
+  if (missing.length) {
+    const tx = d.transaction("referrals", "readwrite");
+    for (const r of missing) {
+      r.referralCode = newReferralCode(taken);
+      await tx.store.put(r);
+    }
+    await tx.done;
+  }
   all.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   state = { loaded: true, referrals: all, error: null };
   emit();
+}
+
+export async function findByCode(code: string): Promise<Referral | undefined> {
+  const d = await db();
+  const target = normaliseCode(code);
+  const all = (await d.getAll("referrals")) as Referral[];
+  return all.find((r) => r.referralCode === target);
 }
 
 let started = false;
@@ -139,8 +177,24 @@ export function useReferrals(): State {
 
 export async function saveReferral(r: Referral) {
   const d = await db();
+  if (!r.referralCode) {
+    const all = (await d.getAll("referrals")) as Referral[];
+    r = { ...r, referralCode: newReferralCode(new Set(all.map((x) => x.referralCode).filter(Boolean) as string[])) };
+  }
   await d.put("referrals", r);
   await reload();
+  return r;
+}
+
+/** Records a facility-verified arrival. Does not change outcome/priority. */
+export async function confirmFacilityArrival(r: Referral) {
+  const at = new Date().toISOString();
+  const code = r.referralCode!;
+  await updateReferral(
+    r,
+    { arrivals: [...(r.arrivals ?? []), { type: "facility_verified_arrival", referralCode: code, at }] },
+    { type: "facility_verified_arrival", at, detail: code },
+  );
 }
 
 /** Apply a change, append history, and mark as waiting to sync. */
